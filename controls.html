@@ -1,0 +1,123 @@
+<!-- $Id: controls.html,v 1.6 2006/05/22 16:51:41 DaveT Exp $ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title></title>
+<style type="text/css">
+.divHeader    { font: bold 9pt Arial, sans-serif; }
+.subHeader    { font: bold 8pt Arial, sans-serif; }
+#linksDiv     { text-align: left; font: 9pt Arial, sans-serif; }
+#idGameState { font: 10pt Courier New, monospace; }
+HR { width: 80%; height: 1px; color: white; }
+</style>
+<script type="text/javascript" src="js/bvgmapview.js"></script>
+<script type="text/javascript" src="js/controls.js"></script>
+</head>
+<body style="margin: 5px">
+<form name="f" action="POST">
+
+<div id="gameStateDiv">
+<table cellpadding='2' cellspacing='0' border='0'>
+<tr><td colspan='2' class="divHeader">GAME STATE</td></tr>
+<tr>    
+    <td colspan='2'><input type="text" size="19" value="" maxlength="18" id="idGameState" name="gameState"></td>
+</tr>
+<tr>
+    <td width="50">
+        <input name="load" type="button" value="Load" onClick='parent.map.loadFromConfiguration(this.form.gameState.value)'>
+    </td>
+    <td>
+        <input name="init" type="button" value="Reset" onClick='parent.map.initialize()'>
+    </td>
+</tr>
+</table>
+</div>
+
+<div id="spacerDiv0" style="height: 20px"></div>
+
+<div id="supplyDiv">
+<table cellpadding='2' cellspacing='0' border='0'>
+<tr><td colspan='2' class="divHeader">SAVED SUPPLY</td></tr>
+<tr>
+    <td class="subHeader" width="50">USA</td>
+    <td class="subHeader">CSA</td>
+</tr>
+<tr>    
+    <td><input type="text" size="2" value="0" maxlength="2" name="usaSupply" onkeyup="javascript:controlView._map.setSupply(controlView._map.STATUS_USA, this.value)"></td>
+    <td><input type="text" size="2" value="0" maxlength="2" name="csaSupply" onkeyup="javascript:controlView._map.setSupply(controlView._map.STATUS_CSA, this.value)"></td>
+</tr>
+</table>
+</div>
+
+<div id="spacerDiv1" style="height: 20px"></div>
+
+<div id="navalDiv">
+<table cellpadding='2' cellspacing='0' border='0'>
+<tr><td colspan='2' class="divHeader">NAVAL SQUADRONS</td></tr>
+<tr>
+    <td class="subHeader" width="50">West</td>
+    <td class="subHeader">East</td>
+</tr>
+<tr>    
+    <td>
+        <select name="navalWest" onchange="javascript:controlView._map.setNavy(controlView._map.THEATER_WEST, this.selectedIndex)">
+            <option value="0" selected>--</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+    </td>
+    <td>
+        <select name="navalEast" onchange="javascript:controlView._map.setNavy(controlView._map.THEATER_EAST, this.selectedIndex)">
+            <option value="0" selected>--</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+    </td>
+</tr>
+</table>
+</div>
+
+<div id="spacerDiv2" style="height: 20px"></div>
+
+<div id="drawRestoreModifiersDiv">
+<span class='divHeader'>DRAW/RESTORE MODS</span><br>
+<input type="checkbox" name="isLateWar"         onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_LATEWAR,   this.checked)"> <span class="subHeader">USA Late War</span><br>
+<input type="checkbox" name="isIroncladsActive" onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_IRONCLADS, this.checked)"> <span class="subHeader">Ironclads</span><br>
+<input type="checkbox" name="isDiggingActive"   onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_DIGGING,   this.checked)"> <span class="subHeader">Digging for South</span><br>
+</div>
+
+<div id="spacerDiv3" style="height: 20px"></div>
+
+<div id="activeCityDiv"><span class='divHeader'>SELECTED CITY</span><br><span class='subHeader'>None</span></div>
+
+<div id="spacerDiv4" style="height: 20px"></div>
+
+<div id="mapButtonsDiv"></div>
+
+<div id="spacerDiv5" style="height: 20px"></div>
+
+<div id="objectivesDiv"></div>
+
+<div id="spacerDiv6" style="height: 20px"></div>
+
+<div id="linksDiv">
+<a href="instructions.html" target="_top">Instructions</a><br>
+<br>
+Programmed by<br>
+<a href="http://www.patriot.net/users/townsend/" target="_top">Dave Townsend</a> /
+<a href="mailto:townsend@patriot.net?Subject=Blue%20Vs%20Gray%20Tracker">(email)</a><br>
+<br>
+<b>Blue vs Gray</b><br>
+game copyright &copy;<br>
+<a href="http://www.gmtgames.com/nnbg/main.html" target="_top">GMT Games</a><br>
+
+<br>
+Play online via
+<a href="http://acts.warhorsesim.com/">ACTS</a>
+</div>
+
+</form>
+</body>
+</html>

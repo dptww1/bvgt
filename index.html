@@ -1,0 +1,31 @@
+<!-- $Id: index.html,v 1.5 2004/11/21 22:48:50 DaveT Exp $ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html> <head>
+<title>Blue vs Gray Tracker</title>
+<script type="text/javascript" src="js/bvgmapmodel.js"></script>
+<script type="text/javascript" src="js/bvgmapview.js"></script>
+<script type="text/javascript" src="js/url.js"></script>
+<script type="text/javascript">
+    var map = new BvGMapModel();
+
+    function initMap() {
+        map.addView(frames[0].controlView);
+        map.addView(frames[0].headerView);
+        map.addView(frames[1].mapView);
+        map.addView(frames[2].statusView);
+        map.initialize();
+
+        if (getQueryParam("loadState")) {
+            frames[0].document.f.gameState.value = getQueryParam("loadState");
+            map.loadFromConfiguration(getQueryParam("loadState"));
+        }
+    }
+</script>
+<frameset cols="170,884" onload="initMap()">
+    <frame name="controls" src="controls.html" frameborder="0">
+    <frameset rows="82%,18%">
+        <frame name="map"   src="map.html"   frameborder="0" marginwidth="0" marginheight="0">
+        <frame name="debug" src="debug.html" frameborder="0">
+    </frameset>
+</frameset>
+</html>
