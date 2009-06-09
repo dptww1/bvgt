@@ -11,8 +11,8 @@ function BvGMapModel() {
 
     // List of city names excluding the 3-state cities
     this._cityArray = this._getCityArray(this._3StateCityArray);
- 
-    this._csaObjectiveCities = this._computeCsaObjectiveCities();   
+
+    this._csaObjectiveCities = this._computeCsaObjectiveCities();
     this._gulfPorts          = this._computeGulfPorts();
     this._atlanticPorts      = this._computeAtlanticPorts();
     // this._mississippiCities has to be set at initialize() time because Island No 10 can be different every game
@@ -81,7 +81,7 @@ BvGMapModel.prototype.addView = function(view) {
 // }}}
 // }}}
 // {{{ Map Housekeeping
-BvGMapModel.prototype._mapCards = [ 
+BvGMapModel.prototype._mapCards = [
     // letter  status
     [ "A", BvGMapModel.prototype.STATUS_USA,     [[ "Indianapolis",         BvGMapModel.prototype.STATUS_USA,     BvGMapModel.prototype.TYPE_CITY ],
                                                   [ "Cincinnati",           BvGMapModel.prototype.STATUS_USA,     BvGMapModel.prototype.TYPE_CITY ],
@@ -247,7 +247,7 @@ BvGMapModel.prototype.getConfiguration = function() {
     rawBytes.push(((this._drawStatus[this.DRAWSTATUS_DIGGING]   ? 1 : 0) << 6) |
                   ((this._drawStatus[this.DRAWSTATUS_IRONCLADS] ? 1 : 0) << 5) |
                   ((this._drawStatus[this.DRAWSTATUS_LATEWAR]   ? 1 : 0) << 4) |
-                  (this._navy[this.THEATER_WEST]                         << 2) | 
+                  (this._navy[this.THEATER_WEST]                         << 2) |
                   this._navy[this.THEATER_EAST]);
 
     // Now uuencode (sorta) the raw bytes
@@ -283,7 +283,7 @@ BvGMapModel.prototype.getConfiguration = function() {
         }
         state = (state + 1) % 4;
     }
-    
+
     return str;
 };
 // }}}
@@ -319,7 +319,7 @@ BvGMapModel.prototype.initialize = function() {
         this.setUsaObjective(i, false);
     }
 
-    this._mississippiCities = { "Cairo"       : 1, 
+    this._mississippiCities = { "Cairo"       : 1,
                                 "Memphis"     : 1,
                                 "Vicksburg"   : 1,
                                 "Port Hudson" : 1,
@@ -390,7 +390,7 @@ BvGMapModel.prototype.loadFromConfiguration = function(configStr) {
             this.activateMapCard(mapLetter, mapStatus[mapLetter], true);
         }
     }
-    
+
     // Read off 3-state city status
     var cityStatusHash = {};
     var shiftAmt = 0;
@@ -439,6 +439,8 @@ BvGMapModel.prototype.loadFromConfiguration = function(configStr) {
     // Now check railnets
     this.setUsaObjective(this.OBJECTIVE_USA_RAILNET, !this._checkCsaRailnet());
     this.setCsaObjective(this.OBJECTIVE_CSA_RAILNET, !this._checkUsaRailnet());
+
+    this._recalcDrawRestores();
 };
 // }}}
 // {{{     _getCityArray() [private]
@@ -450,7 +452,7 @@ BvGMapModel.prototype._getCityArray = function(excludedCities) {
     for (i = 0; i < excludedCities.length; ++i) {
         excludedCityHash[excludedCities[i]] = 1;
     }
-    
+
     for (i = 0; i < this._mapCards.length; ++i) {
         var mapCard = this._mapCards[i];
         var mapCities = mapCard[2];
@@ -496,7 +498,7 @@ BvGMapModel.prototype._computeCsaObjectiveCities = function() {
             }
         }
     }
-    
+
     return cityHash;
 };
 // }}}
@@ -606,7 +608,7 @@ BvGMapModel.prototype.getUnplayedMapCards = function() {
             mapCardList.push(mapCard);
         }
     }
-    
+
     return mapCardList;
 };
 // }}}
@@ -630,7 +632,7 @@ BvGMapModel.prototype._deactivateMapCard = function(mapCard) {
 // {{{ City Housekeeping
 BvGMapModel.prototype._cityStatus = {};
 BvGMapModel.prototype._connections = {
-                           // [0] array of cities adjacent by road/rail  [1] array of cities adjacent by river only 
+                           // [0] array of cities adjacent by road/rail  [1] array of cities adjacent by river only
     "Atlanta"              : [["Chattanooga", "Augusta", "Macon", "Columbus (GA)", "Montgomery", "Selma"]],
     "Augusta"              : [["Columbia", "Florence", "Charleston/Ft Sumter", "Atlanta"]],
     "Baltimore"            : [["Harper's Ferry", "Washington", "Harrisburg"]],
@@ -710,7 +712,7 @@ BvGMapModel.prototype.getCityDefaultStatus = function(cityName) {
 // {{{     getCityStatus()
 BvGMapModel.prototype.getCityStatus = function(cityName) {
     if (typeof(this._cityStatus[cityName]) != "undefined") {
-        return this._cityStatus[cityName]; 
+        return this._cityStatus[cityName];
     }
     return this.STATUS_UNPLAYED;
 };
@@ -836,7 +838,7 @@ BvGMapModel.prototype.setNavy = function(theater, numSquadrons) {
         for (var i = 0; i < this._views.length; ++i) {
             this._views[i].navyChanged(theater, numSquadrons);
         }
-        
+
         if (theater == this.THEATER_EAST) {
             this._checkBlockade();
             this._recalcDrawRestores();
@@ -870,13 +872,13 @@ BvGMapModel.prototype._checkCsaRailnet = function() {
                 var connections = this._connections[nextCityName];
                 for (var i = 0; i < connections.length; ++i) {  // rail and water connections
                     // ignore water connections if rivers are interdicted
-                    if (i == 1 && this.getNavy(this.THEATER_WEST) > 0) { 
-                        continue; 
+                    if (i == 1 && this.getNavy(this.THEATER_WEST) > 0) {
+                        continue;
                     }
 
                     for (var j = 0; j < connections[i].length; ++j) {
                         var adjCityName = connections[i][j];
-                        if (!seenHash[adjCityName] && this.getCityStatus(adjCityName) == this.STATUS_CSA) { 
+                        if (!seenHash[adjCityName] && this.getCityStatus(adjCityName) == this.STATUS_CSA) {
                             if (this.getCityDefaultStatus(adjCityName) == this.STATUS_CSA) {
                                 //debugInfo.push(adjCityName);     // Debugging
                                 if (++railnetSize >= this._numActivatedMaps) {
@@ -917,7 +919,7 @@ BvGMapModel.prototype._checkUsaRailnet = function() {
                 for (var i = 0; i < connections.length; ++i) {  // check rail and water connections
                     for (var j = 0; j < connections[i].length; ++j) {
                         var adjCityName = connections[i][j];
-                        if (!seenHash[adjCityName] && this.getCityStatus(adjCityName) == this.STATUS_USA) { 
+                        if (!seenHash[adjCityName] && this.getCityStatus(adjCityName) == this.STATUS_USA) {
                             if (this._csaObjectiveCities[adjCityName]) {
                                 //debugInfo.push(adjCityName);     // Debugging
                                 if (++railnetSize > 8) {
@@ -1024,7 +1026,7 @@ BvGMapModel.prototype._recalcDrawRestores = function() {
     // USA
     this._draws[this.STATUS_USA]    = 5;
     this._restores[this.STATUS_USA] = 1;
-    
+
     // Extra draw in Late War
     if (this._drawStatus[this.DRAWSTATUS_LATEWAR]) {
         ++this._draws[this.STATUS_USA];
@@ -1043,14 +1045,14 @@ BvGMapModel.prototype._recalcDrawRestores = function() {
     // Check blockade status
     if (this._usaObjectives[this.OBJECTIVE_USA_BLOCKADE]) { // full blockade
         // no changes
-    } else if (this.getNavy(this.THEATER_EAST) == 1 || 
-               this._usaObjectives[this.OBJECTIVE_USA_ATLANTIC_PORTS] ||    
+    } else if (this.getNavy(this.THEATER_EAST) == 1 ||
+               this._usaObjectives[this.OBJECTIVE_USA_ATLANTIC_PORTS] ||
                this._usaObjectives[this.OBJECTIVE_USA_GULF_PORTS]) { // partial blockade
         ++numRestores;
     } else { // no blockade
         ++numDraws;
     }
-    
+
     // How many productions have been lost?
     var numLostProductions = 0;
 
@@ -1074,7 +1076,7 @@ BvGMapModel.prototype._recalcDrawRestores = function() {
             break;
         }
     }
-    
+
     if (doContrabandCheck) {
         var contrabandProductionLost = true;
         for (var cityName in this._mississippiCities) {
@@ -1144,7 +1146,7 @@ BvGMapModel.prototype._checkConnections = function() {
             str += cityName + " has bad adjacency array\n";
             continue;
         }
-            
+
         for (i = 0; i < adjArray[0].length; ++i) {
             adjCityName = adjArray[0][i];
             if (this._connections[adjCityName]) {
