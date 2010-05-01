@@ -332,6 +332,8 @@ BvGMapModel.prototype.initialize = function() {
     this.setDrawStatus(this.DRAWSTATUS_LATEWAR,   false);
     this.setDrawStatus(this.DRAWSTATUS_IRONCLADS, false);
     this.setDrawStatus(this.DRAWSTATUS_DIGGING,   false);
+
+    this._recalcDrawRestores();
 };
 // }}}
 // {{{     loadFromConfiguration()

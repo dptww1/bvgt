@@ -21,12 +21,25 @@ BvGMapViewMap.prototype.activateCity = function(cityName, status, type) {
         if (cityDiv) {
             if (cityInfo.length > 2) {
                 this._positionCityDiv(cityDiv, cityInfo);
-                var html = "";
-                html += "<map name='" + divName + "Hotspots'>";
-                html += this._getCityAreaHTML(cityDiv, cityName, cityInfo);
-                html += "</" + "map>";
-                html += "<img src='" + this._getCityImageFilename(cityInfo[1], status) + "' border='0' useMap='#" + divName + "Hotspots'>";
-                cityDiv.innerHTML = html;
+
+                var safeCityName = cityName.replace(/'/g, "\\'");
+
+                var areaElt = document.createElement("area");
+                areaElt.shape = cityInfo[2];
+                areaElt.coords = this._getCityCoords(cityDiv, cityName, cityInfo);
+
+
+                areaElt.href = "javascript:mapView.selectCity('" + safeCityName + "')";
+                var mapElt = document.getElementById(divName + "Hotspots");
+                mapElt.appendChild(areaElt);
+
+                var imgElt = document.createElement("img");
+                imgElt.id     = "imgId" + cityName;
+                imgElt.src    = this._getCityImageFilename(cityInfo[1], status);
+                imgElt.border = 0;
+                imgElt.useMap = "#" + divName + "Hotspots";
+
+                cityDiv.appendChild(imgElt);
                 cityDiv.style.display = "block";
                 cityDiv.style.visibility = "visible";
             }
@@ -45,7 +58,7 @@ BvGMapViewMap.prototype.activateMapCard = function(mapLetter, mapSide) {
     if (ignoredCards[mapLetter]) {
         return;
     }
-    
+
     var mapFilename = "map_" + mapLetter.toLowerCase() + "_" + this._map.getSideStr(mapSide)  + ".png";
     var mapDiv = document.getElementById("mapCard" + mapLetter + "Div");
     mapDiv.innerHTML = "<img src='images/" + mapFilename + "' usemap='#map" + mapLetter + "Hotspots' border='0'>";
@@ -63,12 +76,10 @@ BvGMapViewMap.prototype.changeCityStatus = function(cityName, newStatus) {
     var cityDiv = document.getElementById(divName);
     if (cityDiv) {
         if (cityInfo.length > 2) {
-            var html = "";
-            html += "<map name='" + divName + "Hotspots'>";
-            html += this._getCityAreaHTML(cityDiv, cityName, cityInfo);
-            html += "</" + "map>";
-            html += "<img src='" + this._getCityImageFilename(cityInfo[1], newStatus) + "' border='0' useMap='#" + divName + "Hotspots'>";
-            cityDiv.innerHTML = html;
+            var imgElt = document.getElementById("imgId" + cityName);
+            if (imgElt != null) {
+                imgElt.src = this._getCityImageFilename(cityInfo[1], newStatus);
+            }
         }
     } else {
         alert("Can't find map div for '" + cityName + "' ('" + divName + "')");
@@ -103,7 +114,26 @@ BvGMapViewMap.prototype._deactivateMapCard = function(mapLetter, status) {
     document.getElementById("mapCard" + mapLetter + "Div").style.visibility = "hidden";
 };
 // }}}
-// {{{ _getCityAreaHTML()
+// {{{ _getCityCoords
+BvGMapViewMap.prototype._getCityCoords = function(div, cityName, cityInfo) {
+    var str = "";
+    switch (cityInfo[2]) {
+    case "circle":
+        str += (cityInfo[3] - parseInt(div.style.left, 10)) + ",";
+        str += (cityInfo[4] - parseInt(div.style.top,  10))  + ",";
+        str += cityInfo[5];
+        break;
+    case "rect":
+        str += (cityInfo[3] - parseInt(div.style.left, 10)) + ",";
+        str += (cityInfo[4] - parseInt(div.style.top,  10))  + ",";
+        str += (cityInfo[5] - parseInt(div.style.left, 10)) + ",";
+        str += (cityInfo[6] - parseInt(div.style.top,  10));
+        break;
+    }
+    return str;
+};
+// }}}
+// {{{ _getCityAreaHTML()  DEFUNCT
 BvGMapViewMap.prototype._getCityAreaHTML = function(div, cityName, cityInfo) {
     var html = "";
     html += '<area href="javascript:mapView.selectCity(\'' + cityName.replace(/'/g, "\\'") + '\')"'; // ' help Emacs
@@ -151,7 +181,7 @@ BvGMapViewMap.prototype._positionCityDiv = function(div, cityInfo) {
             div.style.left = (cityInfo[3] - Math.ceil(27 / 2)) + "px";
             div.style.top  = (cityInfo[4] - Math.ceil(27 / 2)) + "px";
             break;
-        case "rect": 
+        case "rect":
             // Convert upper left corner of rectangle to center of rectangle, then subtract off half of 29 (h and w of city/fort/etc images)
             div.style.left = ((cityInfo[3] + (cityInfo[5] - cityInfo[3]) / 2) - Math.ceil(27 / 2)) + "px";
             div.style.top  = ((cityInfo[4] + (cityInfo[6] - cityInfo[4]) / 2) - Math.ceil(27 / 2 )) + "px";
