@@ -4,7 +4,40 @@
 function BvGMapViewMap() {
     BvGMapView.call(this);
 }
+
 BvGMapViewMap.prototype = new BvGMapView();
+
+BvGMapViewMap.prototype.initialize = function() {
+    // HTML elements should be created only once.
+    for (cityName in this._cityInfo) {
+        var divName = cityName.replace(/[^A-Za-z0-9]/g, "");
+        divName = divName.charAt(0).toLowerCase() + divName.substr(1) + "Div";
+        var cityDiv = document.getElementById(divName);
+        if (cityDiv) {
+            var cityInfo = this._cityInfo[cityName];
+            if (cityInfo.length > 2) {
+                this._positionCityDiv(cityDiv, cityInfo);
+
+                var safeCityName = cityName.replace(/\'/g, "\\'");
+
+                var areaElt = document.createElement("area");
+                areaElt.shape = cityInfo[2];
+                areaElt.coords = this._getCityCoords(cityDiv, cityName, cityInfo);
+
+                areaElt.href = "javascript:mapView.selectCity('" + safeCityName + "')";
+                var mapElt = document.getElementById(divName + "Hotspots");
+                mapElt.appendChild(areaElt);
+
+                var imgElt = document.createElement("img");
+                imgElt.id     = "imgId" + cityName;
+                imgElt.border = 0;
+                imgElt.useMap = "#" + divName + "Hotspots";
+
+                cityDiv.appendChild(imgElt);
+            }
+        }
+    }
+}
 // }}}
 // {{{ activateCity() callback
 BvGMapViewMap.prototype.activateCity = function(cityName, status, type) {
@@ -20,26 +53,9 @@ BvGMapViewMap.prototype.activateCity = function(cityName, status, type) {
         var cityDiv = document.getElementById(divName);
         if (cityDiv) {
             if (cityInfo.length > 2) {
-                this._positionCityDiv(cityDiv, cityInfo);
-
-                var safeCityName = cityName.replace(/'/g, "\\'");
-
-                var areaElt = document.createElement("area");
-                areaElt.shape = cityInfo[2];
-                areaElt.coords = this._getCityCoords(cityDiv, cityName, cityInfo);
-
-
-                areaElt.href = "javascript:mapView.selectCity('" + safeCityName + "')";
-                var mapElt = document.getElementById(divName + "Hotspots");
-                mapElt.appendChild(areaElt);
-
-                var imgElt = document.createElement("img");
-                imgElt.id     = "imgId" + cityName;
+                var imgElt = document.getElementById("imgId" + cityName);
                 imgElt.src    = this._getCityImageFilename(cityInfo[1], status);
-                imgElt.border = 0;
-                imgElt.useMap = "#" + divName + "Hotspots";
 
-                cityDiv.appendChild(imgElt);
                 cityDiv.style.display = "block";
                 cityDiv.style.visibility = "visible";
             }
@@ -98,7 +114,6 @@ BvGMapViewMap.prototype._deactivateCity = function(cityName) {
     divName = divName.charAt(0).toLowerCase() + divName.substr(1) + "Div";
     var cityDiv = document.getElementById(divName);
     if (cityDiv) {
-        cityDiv.innerHTML = "";
         cityDiv.style.visibility = "hidden";
     }
 };
