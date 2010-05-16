@@ -1,6 +1,6 @@
-<!-- $Id: index.html,v 1.5 2004/11/21 22:48:50 DaveT Exp $ -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
-<html> <head>
+<html>
+<head>
 <title>Blue vs Gray Tracker</title>
 <script type="text/javascript" src="js/bvgmapmodel.js"></script>
 <script type="text/javascript" src="js/bvgmapview.js"></script>
@@ -19,17 +19,19 @@
             frames[0].document.f.gameState.value = getQueryParam("loadState");
             map.loadFromConfiguration(getQueryParam("loadState"));
         }
+
+        var screenToggleElt = frames[0].document.getElementById("screenToggle");
+        screenToggleElt.innerHTML = "Narrow Screen Version";
     }
 
     function toggleScreenWidth() {
-        document.location = "index_wide.html?loadState=" + frames[0].document.f.gameState.value;
+        document.location = "index.html?loadState=" + frames[0].document.f.gameState.value;
     }
 </script>
-<frameset cols="170,884" onload="initMap()">
+<frameset cols="170,804,*" onload="initMap()">
     <frame name="controls" src="controls.html" frameborder="0">
-    <frameset rows="82%,18%">
-        <frame name="map"   src="map.html"   frameborder="0" marginwidth="0" marginheight="0">
-        <frame name="debug" src="debug.html" frameborder="0">
+    <frame name="map"   src="map.html"   frameborder="0" marginwidth="0" marginheight="0">
+    <frame name="debug" src="debug.html" frameborder="0">
     </frameset>
 </frameset>
 </html>

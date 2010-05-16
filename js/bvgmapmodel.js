@@ -200,7 +200,7 @@ BvGMapModel.prototype.getConfiguration = function() {
 
     var i;
 
-    // Compute data for the map cards
+    // Compute data for the map cards; 11 cards x 2 bits per card = 22 bits
     var mapCardLetters = "ABCDEFGHIJK";
     for (i = 0; i < mapCardLetters.length; ++i) {
         newByte <<= 2;
@@ -212,7 +212,7 @@ BvGMapModel.prototype.getConfiguration = function() {
         }
     }
 
-    // Compute data for the three-state cities
+    // Compute data for the three-state cities; 5 cities (4 KY + Wheeling) x 2 bits per city = 10 bits (32 bits total)
     for (i = 0; i < this._3StateCityArray.length; ++i) {
         newByte <<= 2;
         newByte |= this.getCityStatus(this._3StateCityArray[i]);

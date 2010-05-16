@@ -89,39 +89,35 @@ BvGMapViewStatus.prototype.updateHTML = function() {
         if (this._changedCities[cityName]) {
             var cityStatus = this._map.getCityStatus(cityName);
             if (cityStatus == this._map.STATUS_USA) {
-                usaControl.push(cityName + (this._map.isCityUsaObjective(cityName) ? " (+1 objective)" : ""));
+                usaControl.push(cityName + (this._map.isCityUsaObjective(cityName) ? " <b>(+1 objective)</b>" : ""));
             } else if (cityStatus == this._map.STATUS_CSA) {
-                csaControl.push(cityName + (this._map.isCityCsaObjective(cityName) ? " (-1 objective)" : ""));
+                csaControl.push(cityName + (this._map.isCityCsaObjective(cityName) ? " <b>(-1 objective)</b>" : ""));
             }
         }
     }
 
-    var str = "";
-    str += "USA Control: " + (usaControl.length > 0 ? usaControl.join(", ") : "None") + "<br>";
-    str += "CSA Control: " + (csaControl.length > 0 ? csaControl.join(", ") : "None") + "<br>";
-    //str += "USA Supply: " + this._map.getSupply(this._map.STATUS_USA) + "<br>";
-    //str += "CSA Supply: " + this._map.getSupply(this._map.STATUS_CSA) + "<br>";
-
-    str += "Other USA Objectives: " + this._usaObjectiveText + "<br>";
-    str += "Other CSA Objectives: " + this._csaObjectiveText + "<br>";
-
-    str += "Net Objectives: " + this._netObjectives + "<br>";
+    strs = [];
 
     for (var i = 0; i < 2; ++i) {
+        var str = "";
         var numDraws    = this._map.getDraws(i);
         var numRestores = this._map.getRestores(i);
 
-        str += this._map.getSideStr(i).toUpperCase() + " Draw: ";
+        str += "<b>" + this._map.getSideStr(i).toUpperCase() + " Draw:</b> ";
         str += numDraws + " draw" + (numDraws > 1 ? "s" : "");
 
         if (numRestores) {
             str += ", " + numRestores + " restore" + (numRestores > 1 ? "s" : "");
         }
-
-        str += "<br>";
+        strs.push(str);
     }
+    strs.push("<b>Net Objectives:</b> " + this._netObjectives);
+    strs.push("<b>USA Control:</b> " + (usaControl.length > 0 ? usaControl.join(", ") : "None"));
+    strs.push("<b>CSA Control:</b> " + (csaControl.length > 0 ? csaControl.join(", ") : "None"));
+    strs.push("<b>Other USA Objectives:</b> " + this._usaObjectiveText);
+    strs.push("<b>Other CSA Objectives:</b> " + this._csaObjectiveText);
 
-    document.getElementById("debugDiv").innerHTML = str;
+    document.getElementById("debugDiv").innerHTML = strs.join("<p>");
 };
 // }}}
 // }}}
