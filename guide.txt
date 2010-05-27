@@ -1,0 +1,472 @@
+THE SINEWS OF WAR
+
+HOW SUPPLY AFFECTS EVERYTHING IN BvG
+
+* INTRODUCTION/OBJECTIVES *
+
+/What do you have to do?/
+
+/Mention Late-War/
+
+*THE SUPPLY SYSTEM*
+
+"Money makes the world go 'round," the old saying goes.  And it's true in BvG, too, the
+unit of money in this case being the supply point.  To get anything done, you have to use
+supply.  With each point, you can:
+
+1) draw an unknown card from the draw pile
+2) draw a known card from cadre
+3) restore up to three depleted units
+4) attack with one force
+5) reorganize all your cards
+
+It's not too much to say that the player making the best use of his supply points will
+be the one that wins the game.
+
+General Principle: Evaluate all game actions in terms of their supply equivalents.
+
+Normally, the USA gets 5 supply per turn while the CSA gets 4.  So the CSA is behind the
+curve from the start, and each turn the differential in cumulative supply points grows.
+Worse for the south, the CSA allotment can be reduced by northern success, and
+the USA gets an extra supply point during Late War.  So the slight USA advantage in the
+beginning becomes more pronounced as the game wears on.  In a game that goes the
+distance, the CSA forces' ability to recover their losses and counterattack disintegrates
+in a most satisfyingly historical fashion.
+
+Another old saying is that "Time is money."  Since BvG's money is supply, then the saying
+must mean "time is supply" -- and it is!  Each turn, the USA must spend at least two of 
+his supply points drawing cards.  The turn after he draws his last card, the game ends.
+
+There are 67 cards in the USA draw pile, so the game will last between 15 (USA drawing
+5 cards/turn) and 35 (USA drawing 2 cards/turn) turns.
+
+It turns out that neither is an optimal strategy.  The supply allotments favor the 
+USA dragging out the game to take advantage of superior numbers.   Consider: in the
+15-turn scenario, the USA will have spent 75 supply points to the CSA 60, a 15-point
+advantage.  But in the 35-turn scenario, its USA 175 v. CSA 140, a decisive 35-point
+advantage.
+
+But the USA can't drag his feet forever.  Sooner or later the 1864 Elections
+will come out, and the USA must have made progress by then or will lose immediately.  
+Also, the beginning of the game sees the CSA military roughly on par with the USA.  If 
+sufficient numbers are not gathered, the CSA may go on the offensive.  The USA has
+to be prepared early to fight off CSA strikes north.
+
+But if the USA marshals his overwhelming force too quickly, he's quickly burns through his
+deck, leaving less time in which to win.
+
+So the supply rules, interacting with the USA deck size, set up a nice self-balancing
+dynamic.  
+
+The CSA has gotten short shrift in this discussion.  That's because nothing special happens
+when the CSA enters late war or runs out of cards in his draw pile.  The clock's ticking
+on the USA; all the CSA has to do is run it out.
+
+*ARMIES & LEADERS*
+
+*NAVIES*
+
+There are only two types of naval cards: ironclad vessels (one for
+each side), and squadrons, which only the USA has.  The navies are
+much simpler than the armies, and few decisions need to be made in
+using them.  The ironclads are technically Enigma cards rather than
+navy cards, but their effects are largely naval, so we'll consider
+them here.
+
+Like the armies, naval squadrons can be stationed in either the East
+or the West.
+
+Squadrons in the East are on blockade duty.  The strength of the blockade
+is None, Partial, or Full, depending on the number of squadrons
+committed (0, 1, and 2 or more, respectively).  A Full Blockade
+counts as a USA objective, and prevents the CSA from getting
+a bonus undepletion (during Partial Blockade) or supply (if No
+Blockade).  Eastern squadrons can also provide leadership for
+amphibious invasions -- no leader needed -- and add their strength
+to all combat at ports (attack and defense).
+
+In the West, squadrons interdict the waterways, preventing the CSA
+from using rivers for retreat routs, supply lines, or railnet size.
+At least one squadron is needed in the West for the USA Mississippi
+objective.  Western squadrons can also add their strength to all
+combat at riverine cities.
+
+The USA has three squadrons, one of which is available at the start of
+the game.  Station it in the East to establish a Partial Blockade,
+and leave it there, as you can't afford to have the CSA getting an
+extra supply each turn due to No Blockade.
+
+When you draw your second squadron, you certainly want to play it
+immediately.  The question is, where should it go, East or West?
+
+Two squadrons in the East works best under these conditions:
+
+* the CSA is on the offensive and is threatening to win a diplomatic
+victory.  Obtaining the Full Blockade objective may allow you to hang
+on until the CSA can be pushed back out of your territory.
+
+* the CSA has many depleted units, and you'd like to deny them the
+free restore that they'll get with a partial blockade.
+
+* you plan to make amphibious invasions, and the extra three strength
+points provided by the squadron will give you the edge to win
+a Soldier's Battle against your likely opposition.
+
+On the other hand, one squadron each in the East and West works
+best if:
+
+* you are on the offensive in the West, driving down
+the Mississippi and/or along the rivers towards Atlanta.
+
+* you will be attacking cities where a riverine squadron cuts off CSA
+retreat paths, such as Island No 10, Port Hudson, or Vicksburg (if
+attacked from Jackson).
+
+* most or all of the river cities are occupied and you can achieve
+your Mississippi objective.  This is especially true if playing with
+optional rule 5, and the CSA has not sent his required force to the
+Trans-Mississippi, since then closing the Mississippi is worth two
+objectives rather than one.
+
+Closing the Mississippi also takes away the "Contraband" CSA production.
+This will the cost the CSA either one supply or one free restore each
+turn, depending on how many other production types have been captured.
+
+Too much depends on the specifics of your game situation to come up with
+a hard and fast rule for which theater to choose.  As a very rough rule of
+thumb, I prefer the Full Blockade early in the game, and deployment in
+the west when I can close the Mississippi.  But you should compute the probable
+supply value of placement in each theater and act accordingly.
+
+-----
+
+Things are equally straightforward when all three squadrons are in
+play: put two in the East and one in the West.  This establishes the
+full blockade, and interdicts the Mississippi, which fulfills two
+objectives.
+
+Remember also can move between theaters.
+
+Each side's single ironclad card should be played as soon as possible.
+As the cards negate each other when played, their effects are
+temporary at best.  But during the period when one side's ironclad is
+available and the other remains in its draw pile, some useful
+advantage can be gained.
+
+The CSA Ironclads card gives one free restore per turn.  Thinking in
+terms of supply points, if the CSA gets three undepletes, the card has
+paid for itself.
+
+The Monitor card gives the USA occupation of Norfolk and acts as a
+blockading force.  Since a full blockade is a victory objective, and
+denies the CSA the free restore he gets during a partial blockade,
+it's quite a nice card to have.
+
+*THE MAP*
+
+BvG's map is highly unusual in that the playing area is made up of cards, and most of
+them begin the game still in the players' decks.  Just four cards -- A, B, D, and E --
+are laid out at start, limiting action to the Virginia / Maryland / Pennsylvania area.
+New map cards can be added as they are drawn, opening new theaters of war.
+Each player has a copy of the remaining map cards (C and F - K) in their draw pile; as a
+fun twist, the USA and CSA versions of each map card differ, usually in very important ways.
+And as a twist on the twist, there are actually *two* USA Map C cards, one with a Kentucky
+neutral, and the other with Kentucky as pro-USA.
+
+The map cards are exclusive, so the first side to play a map card has permanently decided what that
+part of map looks like.  The other player's equivalent map card is then useless.
+
+So, unlike most wargames, the playing area varies from game to game in two important ways.
+The first is timing, since through the vagaries of chance a given map area might remain out of
+play for a good deal of the game.  Capturing the Mississippi river or closing the Gulf ports
+is hard when map card I is near the bottom of both players' decks!  Second, the an area's toughness
+depends on who plays a particular card first.
+
+The CSA must play all drawn map cards immediately, so there are no decisions to make. 
+
+The USA, on the other hand, doesn't have to play map cards.  Why might you hold off?
+There are five possibilities:
+
+1) It's a Map C card during the first few turns, and you have no troops in the west.
+
+2) It's the neutral Map C card, and you're hoping that you'll draw pro-USA Map C.
+
+3) You can deny the CSA a retreat route by leaving the map out of play.
+
+4) You can cut the CSA railnet if the card remains out of play.
+
+5) You can isolate an important city (Richmond, Atlanta) by witholding the card.
+
+But against these reasons you must weigh the possible cost of the CSA player getting his version
+down first.  Each time this happens, additional cities, fortresses, and/or
+pestholes appear, each costing additional time and supplies. You wouldn't have had to deal
+with them if you just laid your card down first.
+
+It's almost never worth trying to be cute.  So:
+
+General Principle: As the USA, play your map cards ASAP.
+
+The cheapest way to capture cities is the indirect approach: isolation.  But that's
+harder to do then in many other point-to-point games, because it's not enough to capture all
+adjacent cities --  instead, you have to control all cities within two locations.  Since even
+"adjacent" cities can be fairly distant (see the Cincinnati - Harper's Ferry or Knoxville - Lynchburg
+connections) it can be virtually impossible to force the surrender of certain cities. 
+
+/Pairs of cities support each other/
+
+The magic number 2 pops up in relation to leaders also.  Leaders with an Initiative
+of 2 can bypass a non-pesthole location to attack the next city down the road.
+
+/Railnet/
+
+MAP A
+
+The old northwest is usually, as it was historically, a backwater.  But if the CSA gets Map C, look out!
+The relatively few cities present mean a lot of territory can be gobbled up quickly, and bypass attacks
+become particularly fearsome.
+
+Cincinnati is the key.  Once captured, the CSA can hit Indianapolis to cut the USA railnet.  (If Wheeling
+is neutral, Toledo works just as well.)  If the USA hasn't gotten any objectives, the CSA wins.
+
+Cleveland and Columbus rarely matter much -- usually the CSA has won by the time extra forces are
+available to attack them.  But they still count as CSA objectives, and if the CSA can muster more
+forces than the USA, they may be worth taking.
+
+MAP B
+
+The heart of the Union.
+
+Washington is very difficult to capture, being a fortress and having a 10 strength garrison in addition
+to whatever else the USA can scrape up.  But its capture is an immediate CSA win.  Once it looks like
+the USA steamroller has begun, it may be worthwhile to take a 1/6 chance of winning before you get pushed back
+to Richmond.
+
+Harper's Ferry and Harrisburg are the keys to an early CSA blitz, since capturing both cuts the USA railnet
+and the resulting +3 VPs often wins the game outright.  Harper's Ferry should see a lot of combat in the
+early game until either the CSA wins outright or gets pushed back to Richmond.
+
+If the CSA is going north, it's usually easier to bypass Baltimore.  It's a bit easier to take than
+Washington, since it has no permanent garrison, and it's satisfying having the USA suffer the drm
+trying to recapture it.  Sometimes a CSA attack here is needed to win if the USA establishes an early
+blockade and the west isn't in play.
+
+Pittsburgh is out of CSA reach.  If they can get there, they'll have won before they do so.
+
+Neutral Wheeling interferes with the USA rail net.  Since either side can get this for free by
+playing Enigma cards, it's rarely worth using a supply to attack it.  USA-controlled Wheeling can
+trace supply to east as well as west -- keep this in mind if defending there.  Remember also that
+Wheeling is connected to Cincinnati by river as well as "no attack" road.  This can
+be an unpleasant surprise for the CSA if there's a Union naval squadron in west, or for the USA
+if there isn't.
+
+MAP C
+
+The most important map card.  There's a decided advantage to the player that gets their card down
+first.
+
+USA Map C will allow an early USA drive down unfortified rivers towards New Orleans and Atlanta.
+
+CSA Map C adds another pitstop on the Mississippi (Island No 10) and puts the "Fort" in Fts Henry
+and Donelson, in addition to a pro-CSA Kentucky.  This allows a CSA blitz in the west, so watch the
+USA fighting to prevent an early loss.
+
+Neutral Map C (the historical result) will likely see KY bypassed until Emancipation throws it into the
+USA camp.  Note that the river connections between Cairo and Fts Henry & Donelson can be used without
+violating KY neutrality.
+
+Early in the game, a neutral or pro-USA map C is likely, since the Union starts with more cards, draws
+more cards (5 to the CSA 4) and has two map Cs in his deck.  After a few turns, when the USA shifts
+to attacking, the CSA map C becomes more likely as the CSA is probably drawing more cards each turn.
+
+Island No 10 prevents isolation of Vicksburg and vice versa.  It's easy enough for the USA to capture,
+but you waste a supply doing so.
+
+Cairo anchors the USA line in the west.  It's often not worth a CSA attack (suffering the fort drm)
+as the pickings are better elsewhere.
+
+Centralia is either ignored, or becomes the endgame of a western CSA blitz going through map A.
+Capturing it with Indianapolis and Cincinnati in hand isolates Cairo and gets 5 VPs, a sure game
+winner despite any USA successes in the east.
+
+Beware, though: a 2-initiative CSA leader can still strike Centralia through even Neutral KY.
+
+For either side, Louisville, Lexington, and Bowling Green are roadstops on the way to places you
+really want to be.
+
+Forts Henry & Donelson and Nashville are important steps on the way to Atlanta.  Given non-CSA KY, if
+the USA can capture either before maps F or G are in play, the other falls by isolation.  This two-for-one
+is nice when you can manage it.  Historically, Grant did just that.
+
+MAP D
+
+Shenandoah is the most important city, being an objective, part of CSA production, and the key to
+keeping the CSA out of the North. Because it's also a pesthole, it can't be isolated or bypassed
+by the USA -- he just has to bull through it. And due to La Belle Rebelle, he should do so sooner
+rather than later.
+
+Lynchburg helps sever the CSA railnet, cutting one of the three lines that join east and west.  It is
+also (somewhat surprisingly) on the fastest route south (Lynchburg, Greensboro, Columbia) to Atlanta,
+and helps to isolate Richmond.
+
+Greensboro is mostly a path to better places.  Note that attackers from here can reach all the way to
+Charleston / Ft Sumter, but not, curiously, Wilmington or New Berne.  Taking it also helps isolate 
+Richmond.
+
+Capturing Knoxville is the other way to cut the CSA rail net.  This path is useful if you've got
+Blue Mountain Boys, but otherwise, because of naval support, the USA's best approach to Atlanta is
+by river.
+
+If playing with optional rule 2, Cumberland Gap is the least important space on the board. Since it
+surrenders if both Lexington and Knoxville are enemy-occupied, attack those places instead and get
+two for the price of one.
+
+MAP E
+
+Eastern Virginia sees a lot of action as the USA drives toward the important objective of Richmond.  The
+Rebel capital is hard to isolate -- 10 cities are w/in two spaces -- and together with Petersburg
+forms self-supporting supply island.
+
+Petersburg has same defensive advantages as Richmond, but is worth less.  If you have to attack a
+fortress anyway, you might as well attack Richmond directly.  The sole exception is if you have
+Infernal Machines, which are useless against Richmond but work just fine against Petersburg (which 
+is where they were historically used).
+
+It takes a gutsy Confederate player to attack Fort Monroe. If as the CSA you have the strength to take a 
+fortress, you're usually better off with Baltimore or Washington.  Fort Monroe is a USA supply base,
+so has no size limit on attacks based from there.  This can allow the USA to put early pressure on Richmond
+(though mind optional rule 3).  The CSA must be careful not to commit all his eastern forces elsewhere
+lest a USA raid from Fort Monroe waltz unopposed into Richmond.
+
+Manassas is just a stepping stone on the way to more important places, north and south.  The USA 
+breathes a little easier after capturing it, since it prevents direct attacks on Washington.
+
+Because it's a pesthole, Wilderness performs its historical function of preventing bypassing
+attacks on Richmond from the north. It also is the gateway to Lynchburg, Greensboro, and points
+south hugging the mountains.
+
+Norfolk - captured for free by USA w/Monitor.  Guaranteed not to be a fort, so a good CSA target to break
+an Atlantic blockade.
+
+Raleigh is important only if trying to isolate the Richmond and/or the Atlantic ports.  Otherwise you're
+wasting supply to attack it.
+
+MAP F
+
+Memphis is the key.  Nice bonus for USA if unfortified.
+
+Corinth helps isolate Vicksburg, is on one path to Atlanta
+
+Grenada is another irritating pesthole.  Needed only as stepping stone to Jackson.
+
+Jackson is needed to isolate Port Hudson and Vicksburg.
+
+Tupelo splits northeast and southeast Mississippi into two fronts.
+Not much reason to attack it; driving on Atlanta you stay north, going
+for the Gulf ports you stay south.
+
+
+MAP G
+
+Atlanta is the prize. It's an objective, and being adjacent to six
+other cities makes it THE rail hub.  The capture of Atlanta usually doesn't
+cut the CSA railnet immediately, but puts it within reach.
+
+Chattanooga is the western gateway to Atlanta.  It's nice for USA if
+it's not a fort, but the Blue Mountain Boys will help out even if it
+is.
+
+Augusta is the eastern gateway to Atlanta.  [DPT: Check out
+theater/supply restrictions -- can either CSA theater defend when
+attacked from east]
+
+Decatur is nice to have.  In conjunction with Nashville you have two
+jumping off points to hit Chattanooga, making it that much harder for
+the CSA to beat you back.
+
+MAP H
+
+The third important map card in determining the game.  USA card gives
+USA a free city (New Berne) instead of one more fortified port, making
+grabbing Atlantic ports feasible.
+
+...
+
+MAP I
+MAP J
+
+The second most important map card. 
+
+The CSA version makes the Union Gulf Ports objective very difficult to
+obtain, throwing up three fortresses, plus a pesthole at Selma. This
+is usually enough to make the USA look elsewhere for victory.
+
+The USA version gives the north not just a city, but a fortress(!) and removes both
+the fort at Mobile and the pesthole at Selma.  This makes tackling the area
+much more palatable.
+
+Because it's a pesthole, Meridian complicates a Union drive east from Mississippi.
+Rather than smashing through, try driving on the Gulf ports from Atlanta or via naval invasion.
+
+Selma, Montgomery, and Columbus are important mostly for rail net purposes.  Montgomery
+has the most connections and hence is the most valuable; Columbus has the fewest connections
+and is less important than the other two.
+
+Ft. Morgan is always a CSA fort and prevents invasions against Mobile.  On the USA map,
+capture Mobile first and force the Confederates to defend without a retreat route.
+
+Mobile ...
+
+
+
+
+
+MAP K
+
+Southern Georgia is perhaps the least important card.  An unfortified Savannah is nice
+for the USA, but unlikely to be decisive.  Map H is far more influential on whether
+the USA can grab the Atlantic ports or not.
+
+Macon is sometimes important as a CSA railnet connection joining the east and west.
+Bypass it to capture an unfortified Savannah if you can.
+
+Boston is Savannah's "buddy city".  Its only purpose is to prevent easy isolation 
+of Savannah, and to give the port's defenders a retreat path.  It's hard to imagine
+wasting a supply to attack it.
+
+*COMBAT*
+
+*VICTORY*
+
+*OPTIONAL RULES*
+
+Variable Soldier's Battle victory: instead of winning a Soldier's
+Battle on >= +5 points, roll a third blue die with each combat
+resolution roll.  The blue die is ignored unless there is a Soldier's
+Battle.  In that case, subtract the weaker side's combat strength from
+the stronger side. If the difference is greater than or equal to the
+blue dieroll, the stronger side wins the battle; otherwise, the battle
+is a stalemate.  Note that forces that are exactly equal will always
+stalemate.
+
+Example: the USA with 17 strength attacks a 14-strength CSA force; on
+a Soldier's Battle, the USA will win if the blue dieroll is 3 or
+greater, since that's the difference between the USA strength and the
+CSA strength.
+
+No Kentucky Blitz: Cities in Kentucky may not be used as jumping-off
+points for attacks on the player-turn that the USA or CSA Map C cards
+are played.  The Neutral Map C card is unaffected by this rule.
+
+I Must Have Kentucky: When either USA or CSA Map C are in play, the
+other side gets an extra objective: control all four enemy
+cities in Kentucky (Bowling Green, Lexington, Louisville, and
+Cumberland Gap).
+
+McClellan: If McClellan begins the USA player turn in command of the
+largest USA force, the USA receives a free restore which can be used
+in either step 1 or step 5.  The "largest" force is computed strictly
+by counting corps and cavalry units, ignoring strengths and steps.  In
+case of ties, the bonus does not apply.
+
+McClellan Again: When McClellan commands the USA forces in a battle, Routed
+results -- for either side! -- are treated as regular Defeated results.

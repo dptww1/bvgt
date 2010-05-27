@@ -1,0 +1,4 @@
+* Would like ability to flip multiple units in combat display
+* Don't add empty messages to the journal
+* On "Assign To" messages, would be helpful to know if came from hand or cadre (to track supply)
+* Would like leader names shortened
