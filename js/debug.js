@@ -58,6 +58,7 @@ BvGMapViewStatus.prototype.navyChanged = function(theater, numSquadrons) {
 // {{{ usaObjectiveChanged() callback
 BvGMapViewStatus.prototype.usaObjectiveChanged = function(objective, onOff) {
     this._netObjectives += (onOff ? 1 : -1);
+
     switch (objective) {
     case this._map.OBJECTIVE_USA_MISSISSIPPI:    this._objectiveText[objective] = (onOff ? "Control Mississippi" : null);  break;
     case this._map.OBJECTIVE_USA_BLOCKADE:       this._objectiveText[objective] = (onOff ? "Blockade"            : null);  break;
@@ -65,6 +66,15 @@ BvGMapViewStatus.prototype.usaObjectiveChanged = function(objective, onOff) {
     case this._map.OBJECTIVE_USA_ATLANTIC_PORTS: this._objectiveText[objective] = (onOff ? "Atlantic Ports"      : null);  break;
     case this._map.OBJECTIVE_USA_GULF_PORTS:     this._objectiveText[objective] = (onOff ? "Gulf Ports"          : null);  break;
     // Richmond/Atlanta handled by city name display code
+    }
+
+    // Mississippi is worth x2 value if CSA Trans-Mississippi requirements not met
+    if (objective == this._map.OBJECTIVE_USA_MISSISSIPPI && !this._map._xMissFulfilled) {
+        this._netObjectives += (onOff ? 1 : -1);
+
+        if (onOff) {
+            this._objectiveText[objective] += " (x2)";
+        }
     }
 
     var str = "";
@@ -77,6 +87,11 @@ BvGMapViewStatus.prototype.usaObjectiveChanged = function(objective, onOff) {
         }
     }
     this._usaObjectiveText = str ? str : "None";
+    this.updateHTML();
+};
+// }}}
+// {{{ xMissFulfilledChanged() callback
+BvGMapViewStatus.prototype.xMissFulfilledChanged = function(onOff) {
     this.updateHTML();
 };
 // }}}
@@ -96,7 +111,7 @@ BvGMapViewStatus.prototype.updateHTML = function() {
         }
     }
 
-    strs = [];
+    var strs = [];
 
     for (var i = 0; i < 2; ++i) {
         var str = "";

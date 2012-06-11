@@ -38,7 +38,7 @@ BvGMapViewControl.prototype.changeDrawStatus = function(drawStatus, onOff) {
     case this._map.DRAWSTATUS_LATEWAR:   elt = f.isLateWar;         break;
     case this._map.DRAWSTATUS_IRONCLADS: elt = f.isIroncladsActive; break;
     case this._map.DRAWSTATUS_DIGGING:   elt = f.isDiggingActive;   break;
-    } 
+    }
     if (elt !== null) {
         elt.checked = onOff;
     }
@@ -107,6 +107,16 @@ BvGMapViewHeader.prototype.changeSupply = function(side, supplyPts) {
 // }}}
 // {{{ navyChanged() callback
 BvGMapViewHeader.prototype.navyChanged = function(theater, numSquadrons) {
+    document.forms.f.gameState.value = this._map.getConfiguration();
+};
+// }}}
+// {{{ canEmancipateChanged() callback
+BvGMapViewHeader.prototype.canEmancipateChanged = function(onOff) {
+    document.forms.f.gameState.value = this._map.getConfiguration();
+};
+// }}}
+// {{{ xMissFulfilledChanged() callback
+BvGMapViewHeader.prototype.xMissFulfilledChanged = function(onOff) {
     document.forms.f.gameState.value = this._map.getConfiguration();
 };
 // }}}

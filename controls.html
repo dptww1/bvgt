@@ -82,10 +82,18 @@ HR { width: 80%; height: 1px; color: white; }
 <div id="spacerDiv2" style="height: 20px"></div>
 
 <div id="drawRestoreModifiersDiv">
-<span class='divHeader'>DRAW/RESTORE MODS</span><br>
+<span class="divHeader">DRAW / RESTORE MODS</span><br>
 <input type="checkbox" name="isLateWar"         onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_LATEWAR,   this.checked)"> <span class="subHeader">USA Late War</span><br>
-<input type="checkbox" name="isIroncladsActive" onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_IRONCLADS, this.checked)"> <span class="subHeader">Ironclads</span><br>
-<input type="checkbox" name="isDiggingActive"   onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_DIGGING,   this.checked)"> <span class="subHeader">Digging for South</span><br>
+<input type="checkbox" name="isIroncladsActive" onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_IRONCLADS, this.checked)"> <span class="subHeader">CSA Ironclads</span><br>
+<input type="checkbox" name="isDiggingActive"   onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_DIGGING,   this.checked)"> <span class="subHeader">CSA Digging for South</span><br>
+</div>
+
+<div id="spacerDiv25" style="height: 20px"></div>
+
+<div id="statusDiv">
+<span class="divHeader">STATUS</span><br>
+<input type="checkbox" name="canEmancipate" onchange="javascript:controlView._map.setCanEmancipate(this.checked)" > <span class="subHeader">USA Can Emancipate</span><br>
+<input type="checkbox" name="xMiss"         onchange="javascript:controlView._map.setXMissFulfilled(this.checked)"> <span class="subHeader">CSA Trans-Miss Fulfilled</span><br>
 </div>
 
 <div id="spacerDiv3" style="height: 20px"></div>

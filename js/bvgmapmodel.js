@@ -32,6 +32,9 @@ function BvGMapModel() {
     this._restores = [0, 0];   // index via STATUS_USA and STATUS_CSA
 
     this._drawStatus = [false, false, false]; // index via DRAWSTATUS_XXX
+
+    this._canEmancipate  = false;
+    this._xMissFulfilled = false;
 }
 
 // }}}
@@ -223,7 +226,7 @@ BvGMapModel.prototype.getConfiguration = function() {
         }
     }
 
-    // Compute data for normal cities
+    // Compute data for normal cities; 55 cities x 1 bit per city = 55 bits (87 bits total)
     for (i = 0; i < this._cityArray.length; ++i) {
         newByte <<= 1;
         // The & 1 will convert UNPLAYED cities to CSA, but since they are, well, not in play that's OK
@@ -235,16 +238,19 @@ BvGMapModel.prototype.getConfiguration = function() {
         }
     }
 
-    // Remember to add on incomplete last byte, if needed
-    if (unusedBitsThisByte != 8) {
-        rawBytes.push(newByte << unusedBitsThisByte);
-    }
+    // There's one bit left in the current byte; let's use it for Trans-Mississippi fulfillment
+    newByte <<= 1;
+    newByte |= this._xMissFulfilled ? 1 : 0;
+    rawBytes.push(newByte);
+    newByte = 0;
+    unusedBitsThisByte = 8;
 
     // Compute data for supply
     rawBytes.push((Math.min(15, this._supply[this.STATUS_USA]) << 4) | Math.min(15, this._supply[this.STATUS_CSA]));
 
     // Compute data for naval squadrons and drawstatus
-    rawBytes.push(((this._drawStatus[this.DRAWSTATUS_DIGGING]   ? 1 : 0) << 6) |
+    rawBytes.push(((this._canEmancipate                         ? 1 : 0) << 7) |
+                  ((this._drawStatus[this.DRAWSTATUS_DIGGING]   ? 1 : 0) << 6) |
                   ((this._drawStatus[this.DRAWSTATUS_IRONCLADS] ? 1 : 0) << 5) |
                   ((this._drawStatus[this.DRAWSTATUS_LATEWAR]   ? 1 : 0) << 4) |
                   (this._navy[this.THEATER_WEST]                         << 2) |
@@ -332,6 +338,9 @@ BvGMapModel.prototype.initialize = function() {
     this.setDrawStatus(this.DRAWSTATUS_LATEWAR,   false);
     this.setDrawStatus(this.DRAWSTATUS_IRONCLADS, false);
     this.setDrawStatus(this.DRAWSTATUS_DIGGING,   false);
+
+    this._canEmancipate  = false;
+    this._xMissFulfilled = false;
 
     this._recalcDrawRestores();
 };
@@ -1126,6 +1135,37 @@ BvGMapModel.prototype._recalcDrawRestores = function() {
 // {{{ Miscellaneous Functions
 // {{{     getMapStatusSummary()
 BvGMapModel.prototype.getMapStatusSummary = function() { // TBD:
+};
+// }}}
+// {{{     setXMissFulfilled()
+BvGMapModel.prototype.setXMissFulfilled = function(onOff) {
+    // When the Trans Miss state changes and the USA has fulfilled their Mississippi objective,
+    // we have to adjust the objectives count.  It seems easiest just to turn off the objective,
+    // set the Trans Miss state, and the reset the objective.  It's a bit of a hack, though.
+    // Have to make sure to set .xMissFulfulled in exactly the right spot, too.
+    var mississippiHack = this._usaObjectives[this.OBJECTIVE_USA_MISSISSIPPI];
+
+    if (mississippiHack) {
+        this.setUsaObjective(this.OBJECTIVE_USA_MISSISSIPPI, false);
+    }
+
+    this._xMissFulfilled = onOff;
+
+    for (var i = 0; i < this._views.length; ++i) {
+        this._views[i].xMissFulfilledChanged(onOff);
+    }
+
+    if (mississippiHack) {
+        this.setUsaObjective(this.OBJECTIVE_USA_MISSISSIPPI, true);
+    }
+};
+// }}}
+// {{{
+BvGMapModel.prototype.setCanEmancipate = function(onOff) {
+    this._canEmancipate = onOff;
+    for (var i = 0; i < this._views.length; ++i) {
+        this._views[i].canEmancipateChanged(onOff);
+    }
 };
 // }}}
 // {{{     getSideStr()
