@@ -169,9 +169,9 @@ them begin the game still in the players' decks.  Just four cards -- A, B, D, an
 are laid out at start, limiting action to the Virginia / Maryland / Pennsylvania area.
 New map cards can be added as they are drawn, opening new theaters of war.
 Each player has a copy of the remaining map cards (C and F - K) in their draw pile; as a
-fun twist, the USA and CSA versions of each map card differ, usually in very important ways.
-And as a twist on the twist, there are actually *two* USA Map C cards, one with a Kentucky
-neutral, and the other with Kentucky as pro-USA.
+fun twist, the USA and CSA versions of each map card differ, often in important ways.
+And as a twist on the twist, there are actually *two* USA Map C cards, one with a neutral
+Kentucky, and the other with Kentucky as pro-USA.
 
 The map cards are exclusive, so the first side to play a map card has permanently decided what that
 part of map looks like.  The other player's equivalent map card is then useless.
@@ -179,7 +179,7 @@ part of map looks like.  The other player's equivalent map card is then useless.
 So, unlike most wargames, the playing area varies from game to game in two important ways.
 The first is timing, since through the vagaries of chance a given map area might remain out of
 play for a good deal of the game.  Capturing the Mississippi river or closing the Gulf ports
-is hard when map card I is near the bottom of both players' decks!  Second, the an area's toughness
+is hard when map card I is near the bottom of both players' decks!  Second, an area's toughness
 depends on who plays a particular card first.
 
 The CSA must play all drawn map cards immediately, so there are no decisions to make. 
@@ -324,7 +324,7 @@ MAP E
 
 Eastern Virginia sees a lot of action as the USA drives toward the important objective of Richmond.  The
 Rebel capital is hard to isolate -- 10 cities are w/in two spaces -- and together with Petersburg
-forms self-supporting supply island.
+forms self-supporting fortified supply island.
 
 Petersburg has same defensive advantages as Richmond, but is worth less.  If you have to attack a
 fortress anyway, you might as well attack Richmond directly.  The sole exception is if you have
