@@ -339,8 +339,8 @@ BvGMapModel.prototype.initialize = function() {
     this.setDrawStatus(this.DRAWSTATUS_IRONCLADS, false);
     this.setDrawStatus(this.DRAWSTATUS_DIGGING,   false);
 
-    this._canEmancipate  = false;
-    this._xMissFulfilled = false;
+    this.setCanEmancipate(false);
+    this.setXMissFulfilled(false);
 
     this._recalcDrawRestores();
 };
@@ -424,8 +424,12 @@ BvGMapModel.prototype.loadFromConfiguration = function(configStr) {
         }
     }
 
-    // Read off supply
+    // Read off Trans-Mississippi fulfillment; we know this is on a byte boundary
+    this.setXMissFulfilled((rawBytes[rawI] >>> shiftAmt) & 1);
+    shiftAmt = 7;
     ++rawI;
+
+    // Read off supply
     this.setSupply(this.STATUS_USA, (rawBytes[rawI] >>> 4) & 0xf);
     this.setSupply(this.STATUS_CSA, rawBytes[rawI] & 0xf);
 
@@ -438,6 +442,7 @@ BvGMapModel.prototype.loadFromConfiguration = function(configStr) {
     this.setDrawStatus(this.DRAWSTATUS_LATEWAR,   (rawBytes[rawI] >>> 4) & 0x1);
     this.setDrawStatus(this.DRAWSTATUS_IRONCLADS, (rawBytes[rawI] >>> 5) & 0x1);
     this.setDrawStatus(this.DRAWSTATUS_DIGGING,   (rawBytes[rawI] >>> 6) & 0x1);
+    this.setCanEmancipate(                        (rawBytes[rawI] >>> 7) & 0x1);
 
     // Now set city status on activated cards
     for (var mapLetter2 in this._activatedMaps) {

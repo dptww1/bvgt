@@ -74,6 +74,13 @@ BvGMapViewControl.prototype.navyChanged = function(theater, numSquadrons) {
     document.forms.f.elements["naval" + controlName].selectedIndex = numSquadrons;
 };
 // }}}
+// {{{ canEmancipateChanged() callback
+BvGMapView.prototype.canEmancipateChanged  = function(onOff) {
+    document.forms.f.elements.canEmancipate.checked = onOff;
+};
+BvGMapView.prototype.xMissFulfilledChanged  = function(onOff) {
+    document.forms.f.elements.xMiss.checked = onOff;
+};
 // }}}
 
 var controlView = new BvGMapViewControl();
