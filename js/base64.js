@@ -1,3 +1,16 @@
+/**
+ * Class: Base64
+ *
+ * Classes to handle the conversion from bit strings to Base64 encodings, and back.
+ *
+ * It is unfortunate, but the choice of characters here and the encoding scheme are
+ * not completely compatible with the standard outlined at http://en.wikipedia.org/wiki/Base64.
+ * In particular, the final two characters of the encoding character set used here differ
+ * from the spec, and omitted trailing data is not denoted with equals signs.
+ *
+ * I've stuck with the existing scheme for backwards compatibility with previous
+ * *Blue vs Gray* Tracker versions.
+ */
 var Base64 = (function() {
   var _charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.";
 
@@ -7,13 +20,27 @@ var Base64 = (function() {
     _charValues[_charSet.charAt(i)] = i;
   }
 
-
+  /**
+   * Class: Encoder
+   *
+   * Creates an encoder with an empty data string.
+   */
   function Encoder() {
     var _bytes   = [];    // accumulated bytes; first bits added are in [0]; bits are filled LSB to MSB
     var _idx     = -1;    // index of current byte within _bytes
-    var _nextBit = -1;     // where next bit within _bytes[_idx] will be stored (7..0)
+    var _nextBit = -1;    // where next bit within _bytes[_idx] will be stored (7..0); when -1, time for a new byte
     var _str     = null;  // if non-null, the cached string value
 
+    /**
+     * Function: add
+     *
+     * Appends a value into the given number of bits.
+     *
+     * Parameters:
+     *
+     *   numBits - the size of the bit field; must be > 0
+     *   val     - the value to append; must fit within the given number of bits
+     */
     this.add = function(numBits, val) {
       if (numBits < 1) {
         throw "don't be a wiseguy";
@@ -31,8 +58,10 @@ var Base64 = (function() {
         bstr = "0" + bstr;
       }
 
+      // Invalidate the cache
       _str = null;
 
+      // Append the bits, MSB to LSB
       for (var i = 0; i < numBits; ++i) {
         if (_nextBit === -1) {
           _idx += 1;
@@ -46,6 +75,15 @@ var Base64 = (function() {
       }
     };
 
+    /**
+     * Function: getStr
+     *
+     * Gets the Base64-encoded string representing the current bit string.
+     *
+     * Returns:
+     *
+     * the encoded string
+     */
     this.getStr = function() {
       // Return cached copy if possible
       if (_str) {
@@ -56,10 +94,10 @@ var Base64 = (function() {
       // State 1: grab bottom 2 bits from cur char, next char, grab top 4 bits
       // State 2: grab bottom 4 bit of cur char, next char, grab top 2 bits
       // State 3: grab bottom 6 bits of cur char
-      var str = "";
-      var state = 0;
-      var bits;
-      var lastIdx = _bytes.length - 1;
+      var str     = "";                // accumulated string
+      var state   = 0;                 // initial decoding state
+      var lastIdx = _bytes.length - 1; // convenience var for last index in _bytes
+      var bits;                        // convenience var for bits generated so far
 
       DECODELOOP:
       for (var i = 0; i < _bytes.length; /*empty*/) {
@@ -113,6 +151,11 @@ var Base64 = (function() {
     };
   };
 
+  /**
+   * Class: Decoder
+   *
+   * Creates a decoder for a given string.
+   */
   function Decoder(str) {
     var _bytes = []; // str translated back from 6-bit characters into 8-bit bytes
     var _idx   = 0;  // index of byte where next read operation begins
@@ -150,23 +193,32 @@ var Base64 = (function() {
       state = (state + 1) % 4;
     }
 
-    this.read = function(numBits) {
+      /**
+       * Function: read
+       *
+       * Reads the given number of bits from the string passed to the constructor.
+       *
+       * Parameters:
+       *
+       *   numBits - the number of bits to read
+       */
+      this.read = function(numBits) {
       var v = 0;
 
       for (var i = 0; i < numBits; ++i) {
         // Did we run off the end of the array?
-          if (_idx > _bytes.length)
-            throw "out of data on bit " + i;
+        if (_idx > _bytes.length)
+          throw "out of data on bit " + i;
 
-          v <<= 1;
-          v |= (_bytes[_idx] >>> _bit) & 0x1;
+        v <<= 1;
+        v |= (_bytes[_idx] >>> _bit) & 0x1;
 
-          _bit -= 1;
+        _bit -= 1;
 
-          if (_bit < 0) {
-            _idx += 1;
-            _bit = 7;
-          }
+        if (_bit < 0) {
+          _idx += 1;
+          _bit = 7;
+        }
       }
 
       return v;
@@ -174,10 +226,21 @@ var Base64 = (function() {
   }
 
   return {
+    /**
+     * Function: getEncoder
+     *
+     * Gets a new, empty encoder.
+     */
     getEncoder : function () {
       return new Encoder();
     },
 
+    /**
+     * Function: getDecoder
+     *
+     * Gets a decoder for the given string. The string must be in the format
+     * produced by <Encoder>.
+     */
     getDecoder : function (str) {
       return new Decoder(str);
     }
