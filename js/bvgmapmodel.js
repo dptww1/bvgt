@@ -1,5 +1,3 @@
-// $Id: bvgmapmodel.js,v 1.7 2004/12/22 02:58:55 DaveT Exp $
-
 // {{{ BvGMapModel
 // {{{ Constructor
 
@@ -197,100 +195,41 @@ BvGMapModel.prototype._charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
 // }}}
 // {{{     getConfiguration()
 BvGMapModel.prototype.getConfiguration = function() {
-    var rawBytes = [];
-    var unusedBitsThisByte = 8;
-    var newByte = 0;
-
+    var encoder = Base64.getEncoder();
     var i;
 
-    // Compute data for the map cards; 11 cards x 2 bits per card = 22 bits
+    // Compute data for the map cards; 11 cards x 2 bits per card = 22 bits: DDCCBBAA|HHGGFFEE|KKJJII
     var mapCardLetters = "ABCDEFGHIJK";
     for (i = 0; i < mapCardLetters.length; ++i) {
-        newByte <<= 2;
-        newByte |= this.getMapCardState(mapCardLetters.charAt(i));
-        if ((unusedBitsThisByte -= 2) <= 0) {
-            rawBytes.push(newByte);
-            newByte = 0;
-            unusedBitsThisByte = 8;
-        }
+        encoder.add(2, this.getMapCardState(mapCardLetters.charAt(i)));
     }
 
     // Compute data for the three-state cities; 5 cities (4 KY + Wheeling) x 2 bits per city = 10 bits (32 bits total)
     for (i = 0; i < this._3StateCityArray.length; ++i) {
-        newByte <<= 2;
-        newByte |= this.getCityStatus(this._3StateCityArray[i]);
-        if ((unusedBitsThisByte -= 2) <= 0) {
-            rawBytes.push(newByte);
-            newByte = 0;
-            unusedBitsThisByte = 8;
-        }
+        encoder.add(2, this.getCityStatus(this._3StateCityArray[i]));
     }
 
     // Compute data for normal cities; 55 cities x 1 bit per city = 55 bits (87 bits total)
     for (i = 0; i < this._cityArray.length; ++i) {
-        newByte <<= 1;
-        // The & 1 will convert UNPLAYED cities to CSA, but since they are, well, not in play that's OK
-        newByte |= (this.getCityStatus(this._cityArray[i]) & 1);
-        if ((unusedBitsThisByte -= 1) <= 0) {
-            rawBytes.push(newByte);
-            newByte = 0;
-            unusedBitsThisByte = 8;
-        }
+        encoder.add(1, (this.getCityStatus(this._cityArray[i]) & 1));
     }
 
     // There's one bit left in the current byte; let's use it for Trans-Mississippi fulfillment
-    newByte <<= 1;
-    newByte |= this._xMissFulfilled ? 1 : 0;
-    rawBytes.push(newByte);
-    newByte = 0;
-    unusedBitsThisByte = 8;
+    encoder.add(1, this._xMissFulfilled ? 1 : 0);
 
     // Compute data for supply
-    rawBytes.push((Math.min(15, this._supply[this.STATUS_USA]) << 4) | Math.min(15, this._supply[this.STATUS_CSA]));
+    encoder.add(4, Math.min(15, this._supply[this.STATUS_USA]));
+    encoder.add(4, Math.min(15, this._supply[this.STATUS_CSA]));
 
     // Compute data for naval squadrons and drawstatus
-    rawBytes.push(((this._canEmancipate                         ? 1 : 0) << 7) |
-                  ((this._drawStatus[this.DRAWSTATUS_DIGGING]   ? 1 : 0) << 6) |
-                  ((this._drawStatus[this.DRAWSTATUS_IRONCLADS] ? 1 : 0) << 5) |
-                  ((this._drawStatus[this.DRAWSTATUS_LATEWAR]   ? 1 : 0) << 4) |
-                  (this._navy[this.THEATER_WEST]                         << 2) |
-                  this._navy[this.THEATER_EAST]);
+    encoder.add(1, this._canEmancipate                         ? 1 : 0);
+    encoder.add(1, this._drawStatus[this.DRAWSTATUS_DIGGING]   ? 1 : 0);
+    encoder.add(1, this._drawStatus[this.DRAWSTATUS_IRONCLADS] ? 1 : 0);
+    encoder.add(1, this._drawStatus[this.DRAWSTATUS_LATEWAR]   ? 1 : 0);
+    encoder.add(2, this._navy[this.THEATER_WEST]);
+    encoder.add(2, this._navy[this.THEATER_EAST]);
 
-    // Now uuencode (sorta) the raw bytes
-    // State 0: grab top 6 bits from cur char
-    // State 1: grab bottom 2 bits from cur char, next char, grab top 4 bits
-    // State 2: grab bottom 4 bit of cur char, next char, grab top 2 bits
-    // State 3: grab bottom 6 bits of cur char
-    var str = "";
-    var state = 0;
-    var bits;
-    for (i = 0; i < rawBytes.length; /*empty*/) {
-        switch (state) {
-        case 0:
-            str += this._charSet.charAt((rawBytes[i] & 0xfc) >>> 2);
-            break;
-        case 1:
-            bits = (rawBytes[i] & 0x3) << 4;
-            if (++i < rawBytes.length) {
-                bits |= ((rawBytes[i] & 0xf0) >>> 4);
-            }
-            str += this._charSet.charAt(bits);
-            break;
-        case 2:
-            bits = (rawBytes[i] & 0xf) << 2;
-            if (++i < rawBytes.length) {
-                bits |= ((rawBytes[i] & 0xc0) >>> 6);
-            }
-            str += this._charSet.charAt(bits);
-            break;
-        case 3:
-            str += this._charSet.charAt(rawBytes[i++] & 0x3f);
-            break;
-        }
-        state = (state + 1) % 4;
-    }
-
-    return str;
+    return encoder.getStr();
 };
 // }}}
 // {{{     initialize()
@@ -347,54 +286,23 @@ BvGMapModel.prototype.initialize = function() {
 // }}}
 // {{{     loadFromConfiguration()
 BvGMapModel.prototype.loadFromConfiguration = function(configStr) {
+    var decoder = Base64.getDecoder(configStr);
     var i;
-
-    // Create reverse lookup table from _charset
-    var charValues = {};
-    for (i = 0; i < this._charSet.length; ++i) {
-        charValues[this._charSet.charAt(i)] = i;
-    }
-
-    // Make a place for unencoded values
-    var rawBytes = [];
-
-    // State 0: cur char goes into top 6 bits
-    // State 1: cur char's bit 5,4 go into low 2 bits, next byte, cur char's bits 3-0 go into top 4 bits
-    // State 2: cur char's bits 5-2 go into low 4 bits, next byte, cur char's bit 1,0 go into top 2 bits
-    // State 3: cur char goes into bottom 6 bits
-    var state = 0;
-    for (i = 0; i < configStr.length; ++i) {
-        var v = charValues[configStr.charAt(i)];
-        switch (state) {
-        case 0:
-            rawBytes.push(v << 2);
-            break;
-        case 1:
-            rawBytes[rawBytes.length - 1] |= ((v & 0x30) >>> 4);
-            rawBytes.push((v & 0x0f) << 4);
-            break;
-        case 2:
-            rawBytes[rawBytes.length - 1] |= ((v & 0x3c) >>> 2);
-            rawBytes.push((v & 0x3) << 6);
-            break;
-        case 3:
-            rawBytes[rawBytes.length - 1] |= v;
-            break;
-        }
-        state = (state + 1) % 4;
-    }
 
     this.initialize();
 
     // Read off map status; can ignore "A", "B", "D", "E" since initialize() took care of them
+    decoder.read(4); // ignore A,B
+
     var mapStatus = {};
-    mapStatus.C = (rawBytes[0] >>> 2) & 3;
-    mapStatus.F = (rawBytes[1] >>> 4) & 3;
-    mapStatus.G = (rawBytes[1] >>> 2) & 3;
-    mapStatus.H = rawBytes[1] & 3;
-    mapStatus.I = (rawBytes[2] >>> 6) & 3;
-    mapStatus.J = (rawBytes[2] >>> 4) & 3;
-    mapStatus.K = (rawBytes[2] >>> 2) & 3;
+    mapStatus.C = decoder.read(2);
+    decoder.read(4); // ignore D,E
+    mapStatus.F = decoder.read(2);
+    mapStatus.G = decoder.read(2);
+    mapStatus.H = decoder.read(2);
+    mapStatus.I = decoder.read(2);
+    mapStatus.J = decoder.read(2);
+    mapStatus.K = decoder.read(2);
 
     for (var mapLetter in mapStatus) {
         if (mapStatus[mapLetter] != this.STATUS_UNPLAYED) {
@@ -404,45 +312,31 @@ BvGMapModel.prototype.loadFromConfiguration = function(configStr) {
 
     // Read off 3-state city status
     var cityStatusHash = {};
-    var shiftAmt = 0;
-    var rawI = 2;
     for (i = 0; i < this._3StateCityArray.length; ++i) {
-        cityStatusHash[this._3StateCityArray[i]] = (rawBytes[rawI] >>> shiftAmt) & 3;
-        if ((shiftAmt -= 2) < 0) {
-            ++rawI;
-            shiftAmt = 6;
-        }
+        cityStatusHash[this._3StateCityArray[i]] = decoder.read(2);
     }
 
     // Read off city status
-    ++shiftAmt;
     for (i = 0; i < this._cityArray.length; ++i) {
-        cityStatusHash[this._cityArray[i]] = (rawBytes[rawI] >>> shiftAmt) & 1;
-        if ((shiftAmt -= 1) < 0) {
-            ++rawI;
-            shiftAmt = 7;
-        }
+        cityStatusHash[this._cityArray[i]] = decoder.read(1);
     }
 
     // Read off Trans-Mississippi fulfillment; we know this is on a byte boundary
-    this.setXMissFulfilled((rawBytes[rawI] >>> shiftAmt) & 1);
-    shiftAmt = 7;
-    ++rawI;
+    this.setXMissFulfilled(decoder.read(1));
 
     // Read off supply
-    this.setSupply(this.STATUS_USA, (rawBytes[rawI] >>> 4) & 0xf);
-    this.setSupply(this.STATUS_CSA, rawBytes[rawI] & 0xf);
-
-    // Read off navies
-    ++rawI;
-    this.setNavy(this.THEATER_WEST, (rawBytes[rawI] >>> 2) & 0x3);
-    this.setNavy(this.THEATER_EAST, rawBytes[rawI] & 0x3);
+    this.setSupply(this.STATUS_USA, decoder.read(4));
+    this.setSupply(this.STATUS_CSA, decoder.read(4));
 
     // Read off draw status
-    this.setDrawStatus(this.DRAWSTATUS_LATEWAR,   (rawBytes[rawI] >>> 4) & 0x1);
-    this.setDrawStatus(this.DRAWSTATUS_IRONCLADS, (rawBytes[rawI] >>> 5) & 0x1);
-    this.setDrawStatus(this.DRAWSTATUS_DIGGING,   (rawBytes[rawI] >>> 6) & 0x1);
-    this.setCanEmancipate(                        (rawBytes[rawI] >>> 7) & 0x1);
+    this.setCanEmancipate(                        decoder.read(1));
+    this.setDrawStatus(this.DRAWSTATUS_DIGGING,   decoder.read(1));
+    this.setDrawStatus(this.DRAWSTATUS_IRONCLADS, decoder.read(1));
+    this.setDrawStatus(this.DRAWSTATUS_LATEWAR,   decoder.read(1));
+
+    // Read off navies
+    this.setNavy(this.THEATER_WEST, decoder.read(2));
+    this.setNavy(this.THEATER_EAST, decoder.read(2));
 
     // Now set city status on activated cards
     for (var mapLetter2 in this._activatedMaps) {
