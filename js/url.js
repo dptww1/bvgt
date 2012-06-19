@@ -1,4 +1,3 @@
-// $Header: /usr/local/cvsroot/bvgt/url.js,v 1.1 2004/11/21 22:51:42 DaveT Exp $
 var _urlQueryParamsHash = { };
 var _urlLocation = new String(document.location);  // copy so that original isn't modified
 if (/\?/.test(_urlLocation)) {
