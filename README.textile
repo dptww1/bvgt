@@ -1,0 +1,7 @@
+h1. Blue vs Gray Tracker
+
+This project support online play of GMT's "Blue vs Gray":http://www.gmtgames.com/p-224-blue-vs-gray-the-civil-war-card-game-ziplock.aspx
+board game.  Well, card game, actually.
+
+
+
