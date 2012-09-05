@@ -1,7 +1,32 @@
 h1. Blue vs Gray Tracker
 
-This project support online play of GMT's "Blue vs Gray":http://www.gmtgames.com/p-224-blue-vs-gray-the-civil-war-card-game-ziplock.aspx
-board game.  Well, card game, actually.
+This project support online play of GMT's "Blue vs Gray":http://www.gmtgames.com/p-224-blue-vs-gray-the-civil-war-card-game-ziplock.aspx board game.  Well, card game, actually.  It lets you refight the American Civil War as either the north or the south, in a very clever, innovative way.
+
+"ACTS":http://acts.warhorsesim.com maintains the location of the various cards in the game (in hand, discarded, etc.) but provides no good way of tracking captured cities or victory points.  This Tracker fills that gap, recording the state of the map, a few convenience flags, the current victory point total, and the number of supply points and free restores each side is entitled to.  Do you remember the exact rule for determining whether the CSA railnet is cut?  Me neither, but with the Tracker I don't have to, as it will note the situation when it arises.
+
+The key to it all is the _Game_State_ text box.  As you make changes to the map and/or game controls, the app updates the _Game_State_ accordingly.  When you're done, you can copy-and-paste the _Game_State_ into your ACTS log.  When he's ready, your opponent can then go to the Tracker site, paste the string from ACTS into his _Game_State_ box, and click _Load_ to see the current state of the game.
+
+h1. Technical Notes
+
+This is entirely a client-side app.  Once it's loaded into the browser, there are no further calls to the web server.  So there's DOM manipulation, but no AJAX calls.  The code base dates back to 2003 or so, before the widespread use of JavaScript libraries like Prototype or JQuery.  I've converted it to use JQuery a bit.
+
+The Game State encoding is extremely similar to Base64 encoding.  It uses a JavaScript library which I wrote for that purpose.
+
+If you're not familiar with the game, try clicking on some of the _Map_Cards_ buttons to set up the map, then click on cities and the _Selected_City_ buttons that appear when you do so to change the map up.  Watch the status area below the map as you play around.  Here are some things to try:
+
+* Set the _Naval_Squadrons_ in the _East_ to 2 or more.  This establishes the Union blockade, which is a game objective.  Notice how the _Net_Objectives_ increases (as establishing the blockade is a USA win), 'Blockade' shows up under _Other_USA_Objectives_, and the CSA Draw drops from '4 draws, 1 restore' to '4 draws'.
+
+* Check the _CSA_Ironclads_ box.  Notice how this adds a restore for the CSA.
+
+* Click a USA city and convert it to CSA control. Each USA city is worth an objective to the CSA.  Notice how this is reflected in both the _Net_Objectives_ line and in the _CSA_Control_ line.  (This isn't symmetrical, though; not every CSA city is worth an objective to the USA.)
+
+* Convert both Harper's Ferry and Harrisburg to CSA control. This is worth a total of 3 CSA objectives, one for each city and a third for severing the USA rail net, meaning not enough USA cities are continuously connected.
+
+The most complicated calculation is determining if the CSA rail net is severed, which happens when the number of continuous connected CSA cities is less than the number of map cards which have been played (11, usually).  I do this using a depth-first traversal of the map graph.  I was quite surprised, but pleasantly so, when this turned out to be fast enough to be performed practically instantly on every city state change, even on the machines of a decade ago.
+
+
+
+
 
 
 
