@@ -76,10 +76,9 @@ BvGMapViewMap.prototype.activateMapCard = function(mapLetter, mapSide) {
     }
 
     var mapFilename = "map_" + mapLetter.toLowerCase() + "_" + this._map.getSideStr(mapSide)  + ".png";
-    var mapDiv = document.getElementById("mapCard" + mapLetter + "Div");
-    mapDiv.innerHTML = "<img src='images/" + mapFilename + "' usemap='#map" + mapLetter + "Hotspots' border='0'>";
-    mapDiv.style.display = "block";
-    mapDiv.style.visibility = "visible";
+    var mapDiv = $("#mapCard" + mapLetter + "Div");
+    mapDiv.html("<img src='images/" + mapFilename + "' usemap='#map" + mapLetter + "Hotspots' border='0'>");
+    mapDiv.fadeIn();
 };
 // }}}
 // {{{ changeCityStatus() callback
@@ -126,7 +125,7 @@ BvGMapViewMap.prototype._deactivateMapCard = function(mapLetter, status) {
         return;
     }
 
-    document.getElementById("mapCard" + mapLetter + "Div").style.visibility = "hidden";
+    $("#mapCard" + mapLetter + "Div").hide();
 };
 // }}}
 // {{{ _getCityCoords
