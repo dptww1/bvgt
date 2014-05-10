@@ -1,12 +1,11 @@
-// {{{ BvGMapViewStatus
+// BvGMapViewStatus
 /*global BvGMapView */
-// {{{ Constructor
+
 function BvGMapViewStatus() {
     BvGMapView.call(this);
 }
 BvGMapViewStatus.prototype = new BvGMapView();
-// }}}
-// {{{ tracking data
+
 BvGMapViewStatus.prototype._changedCities          = {};
 BvGMapViewStatus.prototype._objectiveText          = [null, null, null, null, null, null, null, null, null];
 BvGMapViewStatus.prototype._csaObjectiveText       = "None";
@@ -15,29 +14,24 @@ BvGMapViewStatus.prototype._netObjectives          = 0;
 BvGMapViewStatus.prototype._usaDraw                = 5;
 BvGMapViewStatus.prototype._csaProductionLabels    = ["Food", "Industry", "Contraband"];
 BvGMapViewStatus.prototype._csaLostProductionFlags = [     0,          0,           0 ];
-// }}}
-// {{{ changeCityStatus() callback
+
 BvGMapViewStatus.prototype.changeCityStatus = function(cityName, newStatus) {
     this._changedCities[cityName] = (this._map.getCityDefaultStatus(cityName) != newStatus);
     this.updateHTML();
 };
-// }}}
-// {{{ changeDrawRestores() callback
+
 BvGMapViewStatus.prototype.changeDrawRestores = function(usaDraws, usaRestores, csaDraws, csaRestores) {
     this.updateHTML();
 };
-// }}}
-// {{{ changeDrawStatus() callback
+
 BvGMapViewStatus.prototype.changeDrawStatus = function(drawStatus, onOff) {
     this.updateHTML();
 };
-// }}}
-// {{{ changeSupply() callback
+
 BvGMapViewStatus.prototype.changeSupply = function(side, supplyPts) {
     this.updateHTML();
 };
-// }}}
-// {{{ csaObjectiveChanged() callback
+
 BvGMapViewStatus.prototype.csaObjectiveChanged = function(objective, onOff) {
     this._netObjectives += (onOff ? -1 : 1);
     if (objective == this._map.OBJECTIVE_CSA_RAILNET) {
@@ -46,16 +40,14 @@ BvGMapViewStatus.prototype.csaObjectiveChanged = function(objective, onOff) {
     }
     this.updateHTML();
 };
-// }}}
-// {{{ navyChanged() callback
+
 BvGMapViewStatus.prototype.navyChanged = function(theater, numSquadrons) {
     if (theater == this._map.THEATER_EAST) {
         // update because blockade status may have changed, which affects draws
         this.updateHTML();
     }
 };
-// }}}
-// {{{ usaObjectiveChanged() callback
+
 BvGMapViewStatus.prototype.usaObjectiveChanged = function(objective, onOff) {
     this._netObjectives += (onOff ? 1 : -1);
 
@@ -89,13 +81,11 @@ BvGMapViewStatus.prototype.usaObjectiveChanged = function(objective, onOff) {
     this._usaObjectiveText = str ? str : "None";
     this.updateHTML();
 };
-// }}}
-// {{{ xMissFulfilledChanged() callback
+
 BvGMapViewStatus.prototype.xMissFulfilledChanged = function(onOff) {
     this.updateHTML();
 };
-// }}}
-// {{{ updateHTML()
+
 BvGMapViewStatus.prototype.updateHTML = function() {
     var csaControl = [];
     var usaControl = [];
@@ -134,7 +124,5 @@ BvGMapViewStatus.prototype.updateHTML = function() {
 
     document.getElementById("debugDiv").innerHTML = strs.join("<p>");
 };
-// }}}
-// }}}
 
 var statusView = new BvGMapViewStatus();

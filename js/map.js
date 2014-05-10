@@ -1,6 +1,7 @@
-// {{{ BvGMapViewMap
+// BvGMapViewMap
 /*global BvGMapView */
-// {{{ Constructor
+
+// === Constructor
 function BvGMapViewMap() {
     BvGMapView.call(this);
 }
@@ -38,8 +39,7 @@ BvGMapViewMap.prototype.initialize = function() {
         }
     }
 }
-// }}}
-// {{{ activateCity() callback
+
 BvGMapViewMap.prototype.activateCity = function(cityName, status, type) {
     if (this._cityInfo[cityName]) {
         var cityInfo = this._cityInfo[cityName];
@@ -66,8 +66,7 @@ BvGMapViewMap.prototype.activateCity = function(cityName, status, type) {
         alert("BvGMapView.ActivateCity(): unknown city name '" + cityName + "'");
     }
 };
-// }}}
-// {{{ activateMapCard() callback
+
 BvGMapViewMap.prototype.activateMapCard = function(mapLetter, mapSide) {
     // Ignore the standard at-start cards
     var ignoredCards = { "A":1, "B":1, "D":1, "E":1 };
@@ -80,8 +79,7 @@ BvGMapViewMap.prototype.activateMapCard = function(mapLetter, mapSide) {
     mapDiv.html("<img src='images/" + mapFilename + "' usemap='#map" + mapLetter + "Hotspots' border='0'>");
     mapDiv.fadeIn();
 };
-// }}}
-// {{{ changeCityStatus() callback
+
 BvGMapViewMap.prototype.changeCityStatus = function(cityName, newStatus) {
     var cityInfo = this._cityInfo[cityName];
 
@@ -100,13 +98,11 @@ BvGMapViewMap.prototype.changeCityStatus = function(cityName, newStatus) {
         alert("Can't find map div for '" + cityName + "' ('" + divName + "')");
     }
 };
-// }}}
-// {{{ selectCity()
+
 BvGMapViewMap.prototype.selectCity = function(cityName) {
     this._map.setCityFocus(cityName);
 };
-// }}}
-// {{{ _deactivateCity() callback
+
 BvGMapViewMap.prototype._deactivateCity = function(cityName) {
     // Massage the city name to get the div name
     var divName = cityName.replace(/[^A-Za-z0-9]/g, "");
@@ -116,8 +112,7 @@ BvGMapViewMap.prototype._deactivateCity = function(cityName) {
         cityDiv.style.visibility = "hidden";
     }
 };
-// }}}
-// {{{ _deactivateMapCard() callback
+
 BvGMapViewMap.prototype._deactivateMapCard = function(mapLetter, status) {
     // Ignore the standard at-start cards
     var ignoredCards = { "A":1, "B":1, "D":1, "E":1 };
@@ -127,8 +122,7 @@ BvGMapViewMap.prototype._deactivateMapCard = function(mapLetter, status) {
 
     $("#mapCard" + mapLetter + "Div").hide();
 };
-// }}}
-// {{{ _getCityCoords
+
 BvGMapViewMap.prototype._getCityCoords = function(div, cityName, cityInfo) {
     var str = "";
     switch (cityInfo[2]) {
@@ -146,8 +140,7 @@ BvGMapViewMap.prototype._getCityCoords = function(div, cityName, cityInfo) {
     }
     return str;
 };
-// }}}
-// {{{ _getCityAreaHTML()  DEFUNCT
+
 BvGMapViewMap.prototype._getCityAreaHTML = function(div, cityName, cityInfo) {
     var html = "";
     html += '<area href="javascript:mapView.selectCity(\'' + cityName.replace(/'/g, "\\'") + '\')"'; // ' help Emacs
@@ -170,8 +163,7 @@ BvGMapViewMap.prototype._getCityAreaHTML = function(div, cityName, cityInfo) {
     html += ">";
     return html;
 };
-// }}}
-// {{{ _getCityImageFilename
+
 BvGMapViewMap.prototype._getCityImageFilename = function(cityType, cityStatus) {
     var name = "images/";
     switch (cityType) {
@@ -185,8 +177,7 @@ BvGMapViewMap.prototype._getCityImageFilename = function(cityType, cityStatus) {
     }
     return name + this._map.getSideStr(cityStatus) + ".png";
 };
-// }}}
-// {{{ _positionCityDiv()
+
 BvGMapViewMap.prototype._positionCityDiv = function(div, cityInfo) {
     if (cityInfo && cityInfo.length >= 6) {
         switch (cityInfo[2]) {
@@ -203,8 +194,7 @@ BvGMapViewMap.prototype._positionCityDiv = function(div, cityInfo) {
         }
     }
 };
-// }}}
-// {{{ Private reference data
+
 BvGMapView.prototype._cityInfo = { // anonymous hash; values are [originalOwner, type, hotspot data]
     "Atlanta"              : [null, null, "circle", 384, 454, 8],
     "Augusta"              : [null, null, "circle", 487, 482, 8],
@@ -267,43 +257,41 @@ BvGMapView.prototype._cityInfo = { // anonymous hash; values are [originalOwner,
     "Wilderness"           : [null, null, "circle", 667, 203, 8],
     "Wilmington"           : [null, null, "rect", 674, 428, 689, 443]
 };
-// }}}
-// }}}
 
 var mapView = new BvGMapViewMap();
 
-// {{{ Preload images
+// Preload images
 var img = new Image();
-img.src = "basemap.png";
-img.src = "capital_csa.png";
-img.src = "capital_usa.png";
-img.src = "city_csa.png";
-img.src = "city_neutral.png";
-img.src = "city_usa.png";
-img.src = "city_fort_csa.png";
-img.src = "city_fort_usa.png";
-img.src = "pesthole_csa.png";
-img.src = "pesthole_usa.png";
-img.src = "port_csa.png";
-img.src = "port_usa.png";
-img.src = "port_fort_csa.png";
-img.src = "port_fort_usa.png";
-img.src = "map_c_csa.png";
-img.src = "map_c_neutral.png";
-img.src = "map_c_usa.png";
-img.src = "map_f_usa.png";
-img.src = "map_f_csa.png";
-img.src = "map_g_usa.png";
-img.src = "map_g_csa.png";
-img.src = "map_h_usa.png";
-img.src = "map_h_csa.png";
-img.src = "map_i_usa.png";
-img.src = "map_i_csa.png";
-img.src = "map_j_usa.png";
-img.src = "map_j_csa.png";
-img.src = "map_k_usa.png";
-img.src = "map_k_csa.png";
-// }}}
+img.src = "images/basemap.png";
+img.src = "images/capital_csa.png";
+img.src = "images/capital_usa.png";
+img.src = "images/city_csa.png";
+img.src = "images/city_neutral.png";
+img.src = "images/city_usa.png";
+img.src = "images/city_fort_csa.png";
+img.src = "images/city_fort_usa.png";
+img.src = "images/pesthole_csa.png";
+img.src = "images/pesthole_usa.png";
+img.src = "images/port_csa.png";
+img.src = "images/port_usa.png";
+img.src = "images/port_fort_csa.png";
+img.src = "images/port_fort_usa.png";
+img.src = "images/map_c_csa.png";
+img.src = "images/map_c_neutral.png";
+img.src = "images/map_c_usa.png";
+img.src = "images/map_f_usa.png";
+img.src = "images/map_f_csa.png";
+img.src = "images/map_g_usa.png";
+img.src = "images/map_g_csa.png";
+img.src = "images/map_h_usa.png";
+img.src = "images/map_h_csa.png";
+img.src = "images/map_i_usa.png";
+img.src = "images/map_i_csa.png";
+img.src = "images/map_j_usa.png";
+img.src = "images/map_j_csa.png";
+img.src = "images/map_k_usa.png";
+img.src = "images/map_k_csa.png";
+
 
 function showVersionInfo() {
     window.open("versions.html", "bvgtVerWin");

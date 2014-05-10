@@ -1,5 +1,4 @@
-// {{{ BvGMapModel
-// {{{ Constructor
+// === BvGMapModel
 
 function BvGMapModel() {
     //this._checkConnections();  // Debugging
@@ -35,27 +34,27 @@ function BvGMapModel() {
     this._xMissFulfilled = false;
 }
 
-// }}}
-// {{{ Constants
-// {{{     Theater Constants
+// === Constants
+
+// --- Theater Constants
 BvGMapModel.prototype.THEATER_WEST = 0;
 BvGMapModel.prototype.THEATER_EAST = 1;
-// }}}
-// {{{     Status Constants
+
+// --- Status Constants
 BvGMapModel.prototype.STATUS_USA      = 0;  // city or map card
 BvGMapModel.prototype.STATUS_CSA      = 1;  // city or map card
 BvGMapModel.prototype.STATUS_NEUTRAL  = 2;  // city or map card C
 BvGMapModel.prototype.STATUS_UNPLAYED = 3;  // map card
-// }}}
-// {{{     Type Constants
+
+// --- Type Constants
 BvGMapModel.prototype.TYPE_CITY      = 0;
 BvGMapModel.prototype.TYPE_CITY_FORT = 1;
 BvGMapModel.prototype.TYPE_PORT      = 2;
 BvGMapModel.prototype.TYPE_PORT_FORT = 3;
 BvGMapModel.prototype.TYPE_PESTHOLE  = 4;
 BvGMapModel.prototype.TYPE_CAPITAL   = 5;
-// }}}
-// {{{     Objective Constants
+
+// --- Objective Constants
 BvGMapModel.prototype.OBJECTIVE_USA_MISSISSIPPI    = 1;
 BvGMapModel.prototype.OBJECTIVE_USA_BLOCKADE       = 2;
 BvGMapModel.prototype.OBJECTIVE_USA_RICHMOND       = 3;
@@ -65,23 +64,23 @@ BvGMapModel.prototype.OBJECTIVE_USA_RAILNET        = 6;
 BvGMapModel.prototype.OBJECTIVE_USA_ATLANTIC_PORTS = 7;
 BvGMapModel.prototype.OBJECTIVE_USA_GULF_PORTS     = 8;
 BvGMapModel.prototype.OBJECTIVE_CSA_RAILNET        = "Railnet";
-// }}}
-// {{{     Draw/Restore Status Index Constants
+
+// -- Draw/Restore Status Index Constants
 BvGMapModel.prototype.DRAWSTATUS_LATEWAR   = 0;
 BvGMapModel.prototype.DRAWSTATUS_IRONCLADS = 1;
 BvGMapModel.prototype.DRAWSTATUS_DIGGING   = 2;
-// }}}
-// }}}
-// {{{ View Housekeeping
+
+// === View Housekeeping
+
 BvGMapModel.prototype._views = [];
-// {{{     addView()
+
 BvGMapModel.prototype.addView = function(view) {
     this._views.push(view);
     view._map = this;  // TBD: document and/or fix this
 };
-// }}}
-// }}}
-// {{{ Map Housekeeping
+
+// === Map Housekeeping
+
 BvGMapModel.prototype._mapCards = [
     // letter  status
     [ "A", BvGMapModel.prototype.STATUS_USA,     [[ "Indianapolis",         BvGMapModel.prototype.STATUS_USA,     BvGMapModel.prototype.TYPE_CITY ],
@@ -188,12 +187,9 @@ BvGMapModel.prototype._mapCards = [
                                                   [ "Savannah",             BvGMapModel.prototype.STATUS_CSA,     BvGMapModel.prototype.TYPE_PORT_FORT ],
                                                   [ "Boston",               BvGMapModel.prototype.STATUS_CSA,     BvGMapModel.prototype.TYPE_CITY ]]]
 ];
-// }}}
-// {{{ Configuration Functions
-// {{{     _charSet [private]
-BvGMapModel.prototype._charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.";
-// }}}
-// {{{     getConfiguration()
+
+// === Configuration Functions
+
 BvGMapModel.prototype.getConfiguration = function() {
     var encoder = Base64.getEncoder();
     var i;
@@ -231,8 +227,7 @@ BvGMapModel.prototype.getConfiguration = function() {
 
     return encoder.getStr();
 };
-// }}}
-// {{{     initialize()
+
 BvGMapModel.prototype.initialize = function() {
     // Deactivate activated maps
     for (var mapLetter in this._activatedMaps) {
@@ -283,8 +278,7 @@ BvGMapModel.prototype.initialize = function() {
 
     this._recalcDrawRestores();
 };
-// }}}
-// {{{     loadFromConfiguration()
+
 BvGMapModel.prototype.loadFromConfiguration = function(configStr) {
     var decoder = Base64.getDecoder(configStr);
     var i;
@@ -352,8 +346,7 @@ BvGMapModel.prototype.loadFromConfiguration = function(configStr) {
 
     this._recalcDrawRestores();
 };
-// }}}
-// {{{     _getCityArray() [private]
+
 BvGMapModel.prototype._getCityArray = function(excludedCities) {
     var a = [];
     var i;
@@ -376,8 +369,7 @@ BvGMapModel.prototype._getCityArray = function(excludedCities) {
 
     return a;
 };
-// }}}
-// {{{     _get3StateCityArray() [private]
+
 BvGMapModel.prototype._get3StateCityArray = function() {
     var a = [];
     for (var i = 0; i < this._mapCards.length; ++i) {
@@ -391,8 +383,7 @@ BvGMapModel.prototype._get3StateCityArray = function() {
     }
     return a;
 };
-// }}}
-// {{{    _computeCsaObjectiveCities()
+
 BvGMapModel.prototype._computeCsaObjectiveCities = function() {
     var cityHash = {};
     var nativeUSACityMaps = [["A", this.STATUS_USA],
@@ -411,8 +402,7 @@ BvGMapModel.prototype._computeCsaObjectiveCities = function() {
 
     return cityHash;
 };
-// }}}
-// {{{    _computeAtlanticPorts()
+
 BvGMapModel.prototype._computeAtlanticPorts = function() {
     var cityHash = {};
     var maps = [["E", this.STATUS_CSA],
@@ -429,8 +419,7 @@ BvGMapModel.prototype._computeAtlanticPorts = function() {
     }
     return cityHash;
 };
-// }}}
-// {{{    _computeGulfPorts()
+
 BvGMapModel.prototype._computeGulfPorts = function() {
     var cityHash = {};
     var maps = [["I", this.STATUS_USA],
@@ -446,10 +435,9 @@ BvGMapModel.prototype._computeGulfPorts = function() {
     }
     return cityHash;
 };
-// }}}
-// }}}
-// {{{ Map Functions
-// {{{     activateMapCard()
+
+// === Map Functions
+
 BvGMapModel.prototype.activateMapCard = function(mapLetter, status, dontRecalcRailnet) {
     var mapCard = this.getMapCard(mapLetter, status);
     this._activatedMaps[mapLetter] = mapCard;
@@ -488,8 +476,7 @@ BvGMapModel.prototype.activateMapCard = function(mapLetter, status, dontRecalcRa
         this.setCsaObjective(this.OBJECTIVE_CSA_RAILNET, !this._checkUsaRailnet());
     }
 };
-// }}}
-// {{{     getMapCard()
+
 BvGMapModel.prototype.getMapCard = function(letter, status) {
     for (var i = 0; i < this._mapCards.length; ++i) {
         var mapCard = this._mapCards[i];
@@ -499,16 +486,14 @@ BvGMapModel.prototype.getMapCard = function(letter, status) {
     }
     return null;
 };
-// }}}
-// {{{     getMapCardState()
+
 BvGMapModel.prototype.getMapCardState = function(mapLetter) {
     if (this._activatedMaps[mapLetter]) {
         return this._activatedMaps[mapLetter][1];
     }
     return this.STATUS_UNPLAYED;
 };
-// }}}
-// {{{     getUnplayedMapCards()
+
 BvGMapModel.prototype.getUnplayedMapCards = function() {
     var mapCardList = [];
 
@@ -521,8 +506,7 @@ BvGMapModel.prototype.getUnplayedMapCards = function() {
 
     return mapCardList;
 };
-// }}}
-// {{{ _deactivateMapCard()
+
 BvGMapModel.prototype._deactivateMapCard = function(mapCard) {
     var mapCities = mapCard[2];
     var viewI;
@@ -537,9 +521,9 @@ BvGMapModel.prototype._deactivateMapCard = function(mapCard) {
     }
     this._numActivatedMaps--;
 };
-// }}}
-// }}}
-// {{{ City Housekeeping
+
+// === City Housekeeping
+
 BvGMapModel.prototype._cityStatus = {};
 BvGMapModel.prototype._connections = {
                            // [0] array of cities adjacent by road/rail  [1] array of cities adjacent by river only
@@ -604,9 +588,9 @@ BvGMapModel.prototype._connections = {
     "Wilderness"           : [["Shenandoah Valley", "Manassas Jct", "Richmond", "Lynchburg"]],
     "Wilmington"           : [["Goldsboro", "Florence"]]
 };
-// }}}
-// {{{ City Functions
-// {{{     getCityDefaultStatus()
+
+// === City Functions
+
 BvGMapModel.prototype.getCityDefaultStatus = function(cityName) {
     for (var mapLetter in this._activatedMaps) {
         var mapCityArray = this._activatedMaps[mapLetter][2];
@@ -618,29 +602,25 @@ BvGMapModel.prototype.getCityDefaultStatus = function(cityName) {
     }
     return this.STATUS_UNPLAYED;
 };
-// }}}
-// {{{     getCityStatus()
+
 BvGMapModel.prototype.getCityStatus = function(cityName) {
     if (typeof(this._cityStatus[cityName]) != "undefined") {
         return this._cityStatus[cityName];
     }
     return this.STATUS_UNPLAYED;
 };
-// }}}
-// {{{     isCityCsaObjective()
+
 BvGMapModel.prototype.isCityCsaObjective = function(cityName) {
     return this._csaObjectiveCities[cityName];
 };
-// }}}
-// {{{     isCityUsaObjective()
+
 BvGMapModel.prototype.isCityUsaObjective = function(cityName) {
     if (cityName == "Shenandoah Valley")  { return this.OBJECTIVE_USA_SHENANDOAH; }
     if (cityName == "Atlanta")            { return this.OBJECTIVE_USA_ATLANTA; }
     if (cityName == "Richmond")           { return this.OBJECTIVE_USA_RICHMOND; }
     return false;
 };
-// }}}
-// {{{     setCityFocus()
+
 BvGMapModel.prototype.setCityFocus = function(cityName) {
     // You can only put focus on cities on activated maps
     for (var mapLetter in this._activatedMaps) {
@@ -655,8 +635,7 @@ BvGMapModel.prototype.setCityFocus = function(cityName) {
         }
     }
 };
-// }}}
-// {{{     setCityStatus()
+
 BvGMapModel.prototype.setCityStatus = function(cityName, status, dontCheckRailnet) {
     if (this._cityStatus[cityName] != status) {
         this._cityStatus[cityName] = status;
@@ -715,10 +694,9 @@ BvGMapModel.prototype.setCityStatus = function(cityName, status, dontCheckRailne
         this._recalcDrawRestores();
     }
 };
-// }}}
-// }}}
-// {{{ Supply Functions
-// {{{     setSupply()
+
+// === Supply Functions
+
 BvGMapModel.prototype.setSupply = function(side, supplyPts) {
     if (this._supply[side] != supplyPts) {
         this._supply[side] = supplyPts;
@@ -727,20 +705,17 @@ BvGMapModel.prototype.setSupply = function(side, supplyPts) {
         }
     }
 };
-// }}}
-// {{{     getSupply()
+
 BvGMapModel.prototype.getSupply = function(side) {
     return this._supply[side];
 };
-// }}}
-// }}}
-// {{{ Navy Functions
-// {{{     getNavy()
+
+// === Navy Functions
+
 BvGMapModel.prototype.getNavy = function(theater) {
     return this._navy[theater];
 };
-// }}}
-// {{{     setNavy()
+
 BvGMapModel.prototype.setNavy = function(theater, numSquadrons) {
     if (numSquadrons != this._navy[theater]) {
         var oldNavy = this._navy[theater];
@@ -759,10 +734,9 @@ BvGMapModel.prototype.setNavy = function(theater, numSquadrons) {
         }
     }
 };
-// }}}
-// }}}
-// {{{ Rail net function
-// {{{     _checkCsaRailnet()
+
+// === Rail net function
+
 BvGMapModel.prototype._checkCsaRailnet = function() {
     var seenHash = {};
 
@@ -807,8 +781,7 @@ BvGMapModel.prototype._checkCsaRailnet = function() {
 
     return false;
 };
-// }}}
-// {{{     _checkUsaRailnet()
+
 BvGMapModel.prototype._checkUsaRailnet = function() {
     var seenHash = {};
 
@@ -848,13 +821,12 @@ BvGMapModel.prototype._checkUsaRailnet = function() {
 
     return false;
 };
-// }}}
-// }}}
-// {{{ Objectives Functions
-// {{{     _checkBlockade()
+
+// === Objectives Functions
+
 // The blockade is more complicated than the other objectives because any of three
 // independent conditions can fulfill it.  So you can't just turn it on/off based on
-// just one of those conditions
+// just one of those conditions.
 BvGMapModel.prototype._checkBlockade = function() {
     var fullBlockade = false;
     if (this._navy[this.THEATER_EAST] >= 2) {   // 2+ squadrons in the east is a full blockade
@@ -866,8 +838,7 @@ BvGMapModel.prototype._checkBlockade = function() {
     }
     this.setUsaObjective(this.OBJECTIVE_USA_BLOCKADE, fullBlockade);
 };
-// }}}
-// {{{     _checkMississippiControl()
+
 BvGMapModel.prototype._checkMississippiControl = function() {
     var allMississippiCitiesOccupied = true;
     for (var mississippiCityName in this._mississippiCities) {
@@ -878,8 +849,7 @@ BvGMapModel.prototype._checkMississippiControl = function() {
     }
     this.setUsaObjective(this.OBJECTIVE_USA_MISSISSIPPI, allMississippiCitiesOccupied && this._navy[this.THEATER_WEST] > 0);
 };
-// }}}
-// {{{     setCsaoObjective()
+
 BvGMapModel.prototype.setCsaObjective = function(objective, onOff) {
     if (this._csaObjectives[objective] != onOff) {
         this._csaObjectives[objective] = onOff;
@@ -888,8 +858,7 @@ BvGMapModel.prototype.setCsaObjective = function(objective, onOff) {
         }
     }
 };
-// }}}
-// {{{     setUsaObjective()
+
 BvGMapModel.prototype.setUsaObjective = function(objective, onOff) {
     if (this._usaObjectives[objective] != onOff) {
         this._usaObjectives[objective] = onOff;
@@ -898,20 +867,17 @@ BvGMapModel.prototype.setUsaObjective = function(objective, onOff) {
         }
     }
 };
-// }}}
-// }}}
-// {{{ Draws/Restores
-// {{{     getDraws()
+
+// === Draws/Restores
+
 BvGMapModel.prototype.getDraws = function(side) {
     return this._draws[side];
 };
-// }}}
-// {{{     getRestores()
+
 BvGMapModel.prototype.getRestores = function(side) {
     return this._restores[side];
 };
-// }}}
-// {{{     setDrawStatus()
+
 BvGMapModel.prototype.setDrawStatus = function(drawStatus, onOff) {
     if (this._drawStatus[drawStatus] != onOff) {
         this._drawStatus[drawStatus] = onOff;
@@ -921,8 +887,7 @@ BvGMapModel.prototype.setDrawStatus = function(drawStatus, onOff) {
         }
     }
 };
-// }}}
-// {{{     _recalcDrawRestores()
+
 BvGMapModel.prototype._recalcDrawRestores = function() {
     var oldDraws    = [ this._draws.length ];
     var oldRestores = [ this._restores.length ];
@@ -1029,14 +994,9 @@ BvGMapModel.prototype._recalcDrawRestores = function() {
         }
     }
 };
-// }}}
-// }}}
-// {{{ Miscellaneous Functions
-// {{{     getMapStatusSummary()
-BvGMapModel.prototype.getMapStatusSummary = function() { // TBD:
-};
-// }}}
-// {{{     setXMissFulfilled()
+
+// === Miscellaneous Functions
+
 BvGMapModel.prototype.setXMissFulfilled = function(onOff) {
     // When the Trans Miss state changes and the USA has fulfilled their Mississippi objective,
     // we have to adjust the objectives count.  It seems easiest just to turn off the objective,
@@ -1058,16 +1018,14 @@ BvGMapModel.prototype.setXMissFulfilled = function(onOff) {
         this.setUsaObjective(this.OBJECTIVE_USA_MISSISSIPPI, true);
     }
 };
-// }}}
-// {{{
+
 BvGMapModel.prototype.setCanEmancipate = function(onOff) {
     this._canEmancipate = onOff;
     for (var i = 0; i < this._views.length; ++i) {
         this._views[i].canEmancipateChanged(onOff);
     }
 };
-// }}}
-// {{{     getSideStr()
+
 BvGMapModel.prototype.getSideStr = function(status) {
     if (status == this.STATUS_USA)      { return "usa"; }
     if (status == this.STATUS_CSA)      { return "csa"; }
@@ -1075,8 +1033,7 @@ BvGMapModel.prototype.getSideStr = function(status) {
     if (status == this.STATUS_UNPLAYED) { return "-"; }
     return "?";
 };
-// }}}
-// {{{     _checkConnections
+
 BvGMapModel.prototype._checkConnections = function() {
     var str = "";
     var i, j, adjCityName, crossCheckSucceeded;
@@ -1128,6 +1085,3 @@ BvGMapModel.prototype._checkConnections = function() {
     }
     alert(str || "All connections check out!");
 };
-// }}}
-// }}}
-// }}}
