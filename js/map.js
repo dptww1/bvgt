@@ -193,6 +193,10 @@ BvGMapViewMap.prototype._positionCityDiv = function(div, cityInfo) {
             break;
         }
     }
+
+    var foo = $("#mapDiv");
+    div.style.left += $("#mapDiv").offset().left;
+    div.style.top  += $("#mapDiv").offset().top;
 };
 
 BvGMapView.prototype._cityInfo = { // anonymous hash; values are [originalOwner, type, hotspot data]

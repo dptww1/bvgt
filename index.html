@@ -1,36 +1,253 @@
-<!-- $Id: index.html,v 1.5 2004/11/21 22:48:50 DaveT Exp $ -->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
-<html> <head>
+<!DOCTYPE html5>
+<html>
+<head>
+<meta charset="utf-8">
 <title>Blue vs Gray Tracker</title>
+<style type="text/css">
+.divHeader    { font: bold 9pt Arial, sans-serif; }
+.spacer       { height: 20px; }
+.subHeader    { font: bold 8pt Arial, sans-serif; }
+#debugDiv     { font: 9pt Arial, sans-serif; }
+#idGameState  { font: 10pt Courier New, monospace; }
+#linksDiv     { text-align: left; font: 9pt Arial, sans-serif; }
+#mapDiv {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    width: 796px;
+    height: 668px;
+    margin: 0px;
+}
+</style>
+<script src="libjs/jquery-1.7.2.js"></script>
 <script src="js/base64.js"></script> 
 <script src="js/bvgmapmodel.js"></script>
-<script src="js/bvgmapview.js"></script>
-<script src="js/url.js"></script>
 <script>
     var map = new BvGMapModel();
-
+</script>
+<script src="js/bvgmapview.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/debug.js"></script>
+<script src="js/map.js"></script>
+<script src="js/url.js"></script>
+<script>
     function initMap() {
-        map.addView(frames[0].controlView);
-        map.addView(frames[0].headerView);
-        map.addView(frames[1].mapView);
-        map.addView(frames[2].statusView);
+        map.addView(controlView);
+        map.addView(headerView);
+        map.addView(mapView);
+        map.addView(statusView);
+
+        mapView.initialize();
         map.initialize();
 
         if (getQueryParam("loadState")) {
-            frames[0].document.f.gameState.value = getQueryParam("loadState");
+            document.f.gameState.value = getQueryParam("loadState");
             map.loadFromConfiguration(getQueryParam("loadState"));
         }
     }
+</script> 
 
-    function toggleScreenWidth() {
-        document.location = "index_wide.html?loadState=" + frames[0].document.f.gameState.value;
-    }
-</script>
-<frameset cols="170,884" onload="initMap()">
-    <frame name="controls" src="controls.html" frameborder="0">
-    <frameset rows="670,*">
-        <frame name="map"   src="map.html"   frameborder="0" marginwidth="0" marginheight="0">
-        <frame name="debug" src="debug.html" frameborder="0">
-    </frameset>
-</frameset>
+<body style="margin: 5px" onload="initMap()">
+  <form name="f" action="POST">
+
+  <div name="controls" style="float: left; width: 170px;">
+
+    <div id="gameStateDiv">
+
+      <table cellpadding='2' cellspacing='0' border='0'>
+        <tr><td colspan='2' class="divHeader">GAME STATE</td></tr>
+        <tr>    
+          <td colspan='2'><input type="text" size="19" value="" maxlength="18" id="idGameState" name="gameState"></td>
+        </tr>
+        <tr>
+          <td width="50">
+            <input name="load" type="button" value="Load" onClick='map.loadFromConfiguration(this.form.gameState.value)'>
+          </td>
+          <td>
+            <input name="init" type="button" value="Reset" onClick='map.initialize()'>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div id="supplyDiv">
+      <table cellpadding='2' cellspacing='0' border='0'>
+        <tr><td colspan='2' class="divHeader">SAVED SUPPLY</td></tr>
+        <tr>
+          <td class="subHeader" width="50">USA</td>
+          <td class="subHeader">CSA</td>
+        </tr>
+        <tr>    
+          <td><input type="text" size="2" value="0" maxlength="2" name="usaSupply" onkeyup="javascript:controlView._map.setSupply(controlView._map.STATUS_USA, this.value)"></td>
+          <td><input type="text" size="2" value="0" maxlength="2" name="csaSupply" onkeyup="javascript:controlView._map.setSupply(controlView._map.STATUS_CSA, this.value)"></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div id="navalDiv">
+      <table cellpadding='2' cellspacing='0' border='0'>
+        <tr><td colspan='2' class="divHeader">NAVAL SQUADRONS</td></tr>
+        <tr>
+          <td class="subHeader" width="50">West</td>
+          <td class="subHeader">East</td>
+        </tr>
+        <tr>    
+          <td>
+            <select name="navalWest" onchange="javascript:controlView._map.setNavy(controlView._map.THEATER_WEST, this.selectedIndex)">
+              <option value="0" selected>--</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </select>
+          </td>
+          <td>
+            <select name="navalEast" onchange="javascript:controlView._map.setNavy(controlView._map.THEATER_EAST, this.selectedIndex)">
+              <option value="0" selected>--</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div id="drawRestoreModifiersDiv">
+      <span class="divHeader">DRAW / RESTORE MODS</span><br>
+      <input type="checkbox" name="isLateWar"         onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_LATEWAR,   this.checked)"> <span class="subHeader">USA Late War</span><br>
+      <input type="checkbox" name="isIroncladsActive" onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_IRONCLADS, this.checked)"> <span class="subHeader">CSA Ironclads</span><br>
+      <input type="checkbox" name="isDiggingActive"   onchange="javascript:controlView._map.setDrawStatus(controlView._map.DRAWSTATUS_DIGGING,   this.checked)"> <span class="subHeader">CSA Digging for South</span><br>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div id="statusDiv">
+      <span class="divHeader">STATUS</span><br>
+      <input type="checkbox" name="canEmancipate" onchange="javascript:controlView._map.setCanEmancipate(this.checked)" > <span class="subHeader">USA Can Emancipate</span><br>
+      <input type="checkbox" name="xMiss"         onchange="javascript:controlView._map.setXMissFulfilled(this.checked)"> <span class="subHeader">CSA Trans-Miss Fulfilled</span><br>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div id="activeCityDiv"><span class='divHeader'>SELECTED CITY</span><br><span class='subHeader'>None</span></div>
+
+    <div class="spacer"></div>
+
+    <div id="mapButtonsDiv"></div>
+
+    <div class="spacer"></div>
+
+    <div id="objectivesDiv"></div>
+
+    <div class="spacer"></div>
+
+    <div id="linksDiv">
+      <a href="instructions.html" target="_top">Instructions</a><br>
+      <br>
+      Programmed by<br>
+      <a href="http://www.patriot.net/users/townsend/" target="_top">Dave Townsend</a> /
+      <a href="mailto:townsend@patriot.net?Subject=Blue%20Vs%20Gray%20Tracker">(email)</a><br>
+      <br>
+      <b>Blue vs Gray</b><br>
+      game copyright &copy;<br>
+      <a href="http://www.gmtgames.com/nnbg/main.html" target="_top">GMT Games</a><br>
+
+      <br>
+      Play online via
+      <a href="http://acts.warhorsesim.com/">ACTS</a>
+    </div>
+
+  </div>
+
+  <div style="float: left;">
+    <map name="versionHotspot" id="versionHotspot">
+      <area shape="rect" coords="42,67,161,99" href="versions.html" target="_blank"></area>
+    </map>
+
+    <div id="mapDiv"><img src="images/basemap.png" width="796" height="668" border="0" alt="" useMap="#versionHotspot"></div>
+
+    <!-- display:none has to be inline due to browser bugs, so might as well set all the style properties while we're here -->
+    <div id="mapCardCDiv" style="position:absolute; display:none; left:120px; top:164px; width:274px; height:185px"></div>
+    <div id="mapCardFDiv" style="position:absolute; display:none; left:  0px; top:349px; width:250px; height:178px;"></div>
+    <div id="mapCardGDiv" style="position:absolute; display:none; left:249px; top:349px; width:253px; height:178px;"></div>
+    <div id="mapCardHDiv" style="position:absolute; display:none; left:502px; top:349px; width:294px; height:177px;"></div>
+    <div id="mapCardIDiv" style="position:absolute; display:none; left:  0px; top:526px; width:124px; height:142px;"></div>
+    <div id="mapCardJDiv" style="position:absolute; display:none; left:124px; top:526px; width:251px; height:142px;"></div>
+    <div id="mapCardKDiv" style="position:absolute; display:none; left:375px; top:526px; width:421px; height:142px;"></div>
+
+    <!-- It's inconvenient to have to include the maps within the divs, but Safari 4.0.5 breaks without them -->
+    <div id="atlantaDiv"            style="position:absolute; display:none"><map name="atlantaDivHotspots" id="atlantaDivHotspots"></map></div>
+    <div id="augustaDiv"            style="position:absolute; display:none"><map name="augustaDivHotspots" id="augustaDivHotspots"></map></div>
+    <div id="baltimoreDiv"          style="position:absolute; display:none"><map name="baltimoreDivHotspots" id="baltimoreDivHotspots"></map></div>
+    <div id="bostonDiv"             style="position:absolute; display:none"><map name="bostonDivHotspots" id="bostonDivHotspots"></map></div>
+    <div id="bowlingGreenDiv"       style="position:absolute; display:none"><map name="bowlingGreenDivHotspots" id="bowlingGreenDivHotspots"></map></div>
+    <div id="cairoDiv"              style="position:absolute; display:none"><map name="cairoDivHotspots" id="cairoDivHotspots"></map></div>
+    <div id="centraliaDiv"          style="position:absolute; display:none"><map name="centraliaDivHotspots" id="centraliaDivHotspots"></map></div>
+    <div id="charlestonFtSumterDiv" style="position:absolute; display:none"><map name="charlestonFtSumterDivHotspots" id="charlestonFtSumterDivHotspots"></map></div>
+    <div id="chattanoogaDiv"        style="position:absolute; display:none"><map name="chattanoogaDivHotspots" id="chattanoogaDivHotspots"></map></div>
+    <div id="cincinnatiDiv"         style="position:absolute; display:none"><map name="cincinnatiDivHotspots" id="cincinnatiDivHotspots"></map></div>
+    <div id="clevelandDiv"          style="position:absolute; display:none"><map name="clevelandDivHotspots" id="clevelandDivHotspots"></map></div>
+    <div id="columbiaDiv"           style="position:absolute; display:none"><map name="columbiaDivHotspots" id="columbiaDivHotspots"></map></div>
+    <div id="columbusGADiv"         style="position:absolute; display:none"><map name="columbusGADivHotspots" id="columbusGADivHotspots"></map></div>
+    <div id="columbusOHDiv"         style="position:absolute; display:none"><map name="columbusOHDivHotspots" id="columbusOHDivHotspots"></map></div>
+    <div id="corinthDiv"            style="position:absolute; display:none"><map name="corinthDivHotspots" id="corinthDivHotspots"></map></div>
+    <div id="cumberlandGapDiv"      style="position:absolute; display:none"><map name="cumberlandGapDivHotspots" id="cumberlandGapDivHotspots"></map></div>
+    <div id="decaturDiv"            style="position:absolute; display:none"><map name="decaturDivHotspots" id="decaturDivHotspots"></map></div>
+    <div id="florenceDiv"           style="position:absolute; display:none"><map name="florenceDivHotspots" id="florenceDivHotspots"></map></div>
+    <div id="ftMonroeDiv"           style="position:absolute; display:none"><map name="ftMonroeDivHotspots" id="ftMonroeDivHotspots"></map></div>
+    <div id="ftMorganDiv"           style="position:absolute; display:none"><map name="ftMorganDivHotspots" id="ftMorganDivHotspots"></map></div>
+    <div id="ftPickensDiv"          style="position:absolute; display:none"><map name="ftPickensDivHotspots" id="ftPickensDivHotspots"></map></div>
+    <div id="ftsHenryDonelsonDiv"   style="position:absolute; display:none"><map name="ftsHenryDonelsonDivHotspots" id="ftsHenryDonelsonDivHotspots"></map></div>
+    <div id="goldsboroDiv"          style="position:absolute; display:none"><map name="goldsboroDivHotspots" id="goldsboroDivHotspots"></map></div>
+    <div id="greensboroDiv"         style="position:absolute; display:none"><map name="greensboroDivHotspots" id="greensboroDivHotspots"></map></div>
+    <div id="grenadaDiv"            style="position:absolute; display:none"><map name="grenadaDivHotspots" id="grenadaDivHotspots"></map></div>
+    <div id="harpersFerryDiv"       style="position:absolute; display:none"><map name="harpersFerryDivHotspots" id="harpersFerryDivHotspots"></map></div>
+    <div id="harrisburgDiv"         style="position:absolute; display:none"><map name="harrisburgDivHotspots" id="harrisburgDivHotspots"></map></div>
+    <div id="indianapolisDiv"       style="position:absolute; display:none"><map name="indianapolisDivHotspots" id="indianapolisDivHotspots"></map></div>
+    <div id="islandNo10Div"         style="position:absolute; display:none"><map name="islandNo10DivHotspots" id="islandNo10DivHotspots"></map></div>
+    <div id="jacksonDiv"            style="position:absolute; display:none"><map name="jacksonDivHotspots" id="jacksonDivHotspots"></map></div>
+    <div id="knoxvilleDiv"          style="position:absolute; display:none"><map name="knoxvilleDivHotspots" id="knoxvilleDivHotspots"></map></div>
+    <div id="lexingtonDiv"          style="position:absolute; display:none"><map name="lexingtonDivHotspots" id="lexingtonDivHotspots"></map></div>
+    <div id="louisvilleDiv"         style="position:absolute; display:none"><map name="louisvilleDivHotspots" id="louisvilleDivHotspots"></map></div>
+    <div id="lynchburgDiv"          style="position:absolute; display:none"><map name="lynchburgDivHotspots" id="lynchburgDivHotspots"></map></div>
+    <div id="maconDiv"              style="position:absolute; display:none"><map name="maconDivHotspots" id="maconDivHotspots"></map></div>
+    <div id="manassasJctDiv"        style="position:absolute; display:none"><map name="manassasJctDivHotspots" id="manassasJctDivHotspots"></map></div>
+    <div id="memphisDiv"            style="position:absolute; display:none"><map name="memphisDivHotspots" id="memphisDivHotspots"></map></div>
+    <div id="meridianDiv"           style="position:absolute; display:none"><map name="meridianDivHotspots" id="meridianDivHotspots"></map></div>
+    <div id="mobileDiv"             style="position:absolute; display:none"><map name="mobileDivHotspots" id="mobileDivHotspots"></map></div>
+    <div id="montgomeryDiv"         style="position:absolute; display:none"><map name="montgomeryDivHotspots" id="montgomeryDivHotspots"></map></div>
+    <div id="nashvilleDiv"          style="position:absolute; display:none"><map name="nashvilleDivHotspots" id="nashvilleDivHotspots"></map></div>
+    <div id="newBerneDiv"           style="position:absolute; display:none"><map name="newBerneDivHotspots" id="newBerneDivHotspots"></map></div>
+    <div id="newOrleansDiv"         style="position:absolute; display:none"><map name="newOrleansDivHotspots" id="newOrleansDivHotspots"></map></div>
+    <div id="norfolkDiv"            style="position:absolute; display:none"><map name="norfolkDivHotspots" id="norfolkDivHotspots"></map></div>
+    <div id="pensacolaDiv"          style="position:absolute; display:none"><map name="pensacolaDivHotspots" id="pensacolaDivHotspots"></map></div>
+    <div id="petersburgDiv"         style="position:absolute; display:none"><map name="petersburgDivHotspots" id="petersburgDivHotspots"></map></div>
+    <div id="pittsburghDiv"         style="position:absolute; display:none"><map name="pittsburghDivHotspots" id="pittsburghDivHotspots"></map></div>
+    <div id="portHudsonDiv"         style="position:absolute; display:none"><map name="portHudsonDivHotspots" id="portHudsonDivHotspots"></map></div>
+    <div id="raleighDiv"            style="position:absolute; display:none"><map name="raleighDivHotspots" id="raleighDivHotspots"></map></div>
+    <div id="richmondDiv"           style="position:absolute; display:none"><map name="richmondDivHotspots" id="richmondDivHotspots"></map></div>
+    <div id="savannahDiv"           style="position:absolute; display:none"><map name="savannahDivHotspots" id="savannahDivHotspots"></map></div>
+    <div id="selmaDiv"              style="position:absolute; display:none"><map name="selmaDivHotspots" id="selmaDivHotspots"></map></div>
+    <div id="shenandoahValleyDiv"   style="position:absolute; display:none"><map name="shenandoahValleyDivHotspots" id="shenandoahValleyDivHotspots"></map></div>
+    <div id="toledoDiv"             style="position:absolute; display:none"><map name="toledoDivHotspots" id="toledoDivHotspots"></map></div>
+    <div id="tupeloDiv"             style="position:absolute; display:none"><map name="tupeloDivHotspots" id="tupeloDivHotspots"></map></div>
+    <div id="vicksburgDiv"          style="position:absolute; display:none"><map name="vicksburgDivHotspots" id="vicksburgDivHotspots"></map></div>
+    <div id="washingtonDiv"         style="position:absolute; display:none"><map name="washingtonDivHotspots" id="washingtonDivHotspots"></map></div>
+    <div id="wheelingDiv"           style="position:absolute; display:none"><map name="wheelingDivHotspots" id="wheelingDivHotspots"></map></div>
+    <div id="wildernessDiv"         style="position:absolute; display:none"><map name="wildernessDivHotspots" id="wildernessDivHotspots"></map></div>
+    <div id="wilmingtonDiv"         style="position:absolute; display:none"><map name="wilmingtonDivHotspots" id="wilmingtonDivHotspots"></map></div>
+        
+  </div>
+
+  <div id="debugDiv">debug</div>
+
+  </form>
+
+</body>
 </html>

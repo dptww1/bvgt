@@ -133,4 +133,3 @@ img.src = "images/btn_j_csa.png";
 img.src = "images/btn_j_usa.png";
 img.src = "images/btn_k_csa.png";
 img.src = "images/btn_k_usa.png";
-// }}}
