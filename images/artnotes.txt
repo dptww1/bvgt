@@ -1,3 +1,5 @@
 City Labels: Century Gothic, 9pt bold
-Blue vs Gray title: Century (date/version: 8pt)
+Blue vs Gray title: Century (date/version: 8pt) (On Mac, Century Schoolbook, 10pt, bold each character given extra kerning
 Map Labels: Century Gothic, 18pt bold
+
+Map.kra is now the master map. Gimp was too irritating.
